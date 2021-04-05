@@ -1,3 +1,1 @@
-# RAGE Rustic Ascii Graphic Engine
-
-Projet S4
+This is the RAGE project website hosted on gitlab pages.

@@ -1,0 +1,6 @@
+# website
+_site
+.sass-cache
+*.gem
+Gemfile.lock
+.jekyll-cache

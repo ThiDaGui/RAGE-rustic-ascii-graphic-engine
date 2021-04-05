@@ -1,0 +1,8 @@
+title: RAGE
+logo:
+description: "RAGE : Rustic Ascii Graphic Engine"
+show_downloads: true
+theme: jekyll-theme-minimal
+baseurl: /minimal-theme
+imgpath: /minimal-theme/assets/img/
+dlpath: /minimal-theme/downloads/
