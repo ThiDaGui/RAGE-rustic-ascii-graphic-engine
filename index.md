@@ -37,14 +37,14 @@ end
 ## Logiciels
 
 *   [Docker](https://www.docker.com/)
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
 
-## Librairies
+## Outils
 
-### Site Web
 *   [Jekyll](https://jekyllrb.com/)
 *   [GitLab Pages](https://docs.gitlab.com/ee/user/project/pages/)
+
+## Bibliothèques
+
 *   [Minimal theme](https://github.com/pages-themes/minimal)
 
 
