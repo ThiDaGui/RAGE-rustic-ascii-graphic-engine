@@ -1,0 +1,14 @@
+---
+layout : default
+---
+
+<h1>Le développement du projet</h1>
+
+<ul>
+    {% for post in site.dev %}
+        <li>
+        <h2><a href="{{ site.url }}{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+        {{ post.excerpt }}
+        </li>
+    {% endfor %}
+</ul>

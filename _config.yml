@@ -1,8 +1,10 @@
 title: RAGE
-logo:
 description: "RAGE : Rustic Ascii Graphic Engine"
 show_downloads: true
 theme: jekyll-theme-minimal
 baseurl: /rage-rustic-ascii-graphic-engine
 imgpath: /rage-rustic-ascii-graphic-engine/assets/img/
 dlpath: /rage-rustic-ascii-graphic-engine/downloads/
+collections: 
+  dev:
+    output: true
