@@ -4,7 +4,11 @@ layout: default
 
 # Le Projet
 
+<<<<<<< HEAD
 RAGE (Rustic Ascii Graphic Engine) est un moteur de rendu en trois dimensions qui, donné un objet 3D, l’affiche en caractères ASCII ; et permet de manipuler la caméra de manière à pouvoir faire pivoter et zoomer l’objet, ainsi que de manipuler l’éclairage. Cela implique nombreux calculs algébriques sur les matrices et l’optimisation de la mémoire pour avoir une expérience agréable.
+=======
+RAGE (Rustic Ascii Graphic Engine) est un moteur de rendu en trois dimensions qui, donné un objet 3d, l’affiche en caractères ASCII ; et permet de manipuler la caméra de manière à pouvoir faire pivoter et zoomer l’objet, ainsi que de manipuler l’éclairage. Cela implique nombreux calculs algébriques sur les matrices et l’optimisation de la mémoire pour avoir une expérience agréable.\
+>>>>>>> f984092e1b7ca3ae78eaf8d1cdb2e26c41c2b485
 Le rendu ASCII nous a semblé intéressant car il nous permettrait de visualiser ces objets dans la même console ou dans une nouvelle console sans avoir besoin d’utiliser des bibliothèques graphiques. D’un point de vue mathématique, il propose également un défi consistant à choisir les bons caractères à afficher, car au lieu de montrer des pixels, nous afficherions de petites régions remplacées par des caractères ; ceux-ci pouvant varier en fonction de l’éclairage ou de la taille de la région à afficher.
 
 ## Les membres
