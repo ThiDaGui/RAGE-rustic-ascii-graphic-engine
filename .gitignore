@@ -4,3 +4,4 @@ _site
 *.gem
 Gemfile.lock
 .jekyll-cache
+public
