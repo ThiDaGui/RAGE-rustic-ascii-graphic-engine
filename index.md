@@ -4,7 +4,7 @@ layout: default
 
 # Le Projet
 
-Laborum nisi sint laborum occaecat veniam pariatur in pariatur cupidatat occaecat. Non commodo id veniam esse deserunt est pariatur ea Lorem ullamco Lorem occaecat sunt ad. Ipsum exercitation incididunt in culpa exercitation. Ex reprehenderit in tempor magna nostrud laboris nostrud elit Lorem. Magna aliqua anim ipsum ullamco. Exercitation incididunt dolore eu magna minim occaecat ea est reprehenderit do anim velit quis aute.
+RAGE(Rustic Ascii Graphic Engine) est un moteur de rendu en trois dimen-sions qui, donné un objet 3d, l’affiche en caractères ASCII ; et permet de manipulerla caméra de manière à pouvoir faire pivoter et zoomer l’objet, ainsi que de ma-nipuler l’éclairage. Cela implique nombreux calculs algébriques sur les matrices etl’optimisation de la mémoire pour avoir une expérience agréable.Le rendu ASCII nous a semblé intéressant car il nous permettrait de visualiserces objets dans la même console ou dans une nouvelle console sans avoir besoind’utiliser des bibliothèques graphiques. D’un point de vue mathématique, il proposeégalement un défi consistant à choisir les bons caractères à afficher, car au lieu demontrer des pixels, nous afficherions de petites régions remplacées par des caractères; ceux-ci pouvant varier en fonction de l’éclairage ou de la taille de la région à afficher.
 
 ## Les membres
 
@@ -37,9 +37,11 @@ end
 ## Logiciels
 
 *   [Docker](https://www.docker.com/)
+*   [Blender](https://www.blender.org/)
 
 ## Outils
 
+*   [Git](https://git-scm.com/)
 *   [Jekyll](https://jekyllrb.com/)
 *   [GitLab Pages](https://docs.gitlab.com/ee/user/project/pages/)
 
