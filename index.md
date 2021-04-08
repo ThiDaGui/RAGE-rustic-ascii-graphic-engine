@@ -19,7 +19,7 @@ Le rendu ASCII nous a semblé intéressant car il nous permettrait de visualiser
 Nulla fugiat irure exercitation et irure culpa ipsum quis ut qui voluptate nulla ullamco commodo. Deserunt laborum qui consequat sunt anim excepteur do reprehenderit aliqua incididunt. Id laboris incididunt eu consectetur est velit dolor excepteur. Dolor laborum fugiat dolore eiusmod deserunt ex elit ea ullamco voluptate.
 
 #### Diagramme de Gantt du projet
-![Diagramme de Gantt]({{site.imgpath}}gantt.PNG)
+![Diagramme de Gantt]({{site.imgpath}}gantt.png)
 
 ```js
 // Javascript code with syntax highlighting.
