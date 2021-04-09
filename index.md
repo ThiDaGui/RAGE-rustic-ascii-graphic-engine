@@ -33,7 +33,10 @@ Le rendu ASCII nous a semblé intéressant car il nous permettrait de visualiser
 *   [Git](https://git-scm.com/)
 *   [Jekyll](https://jekyllrb.com/)
 *   [GitLab Pages](https://docs.gitlab.com/ee/user/project/pages/)
+*   [CMake](https://cmake.org/)
 
 ## Bibliothèques
 
 *   [Minimal theme](https://github.com/pages-themes/minimal)
+*   [Unity](http://www.throwtheswitch.org/unity)
+*   [ncurses](https://invisible-island.net/ncurses/)
