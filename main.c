@@ -129,7 +129,7 @@ int     main(int argc, char *argv[]) {
 
     /* Lightning init */
     vector3_t   light = VECTOR3_INIT;
-    vector3_set(&light, 0, 255, 255);
+    vector3_set(&light, 100, 150, 120);
 
     /* Camera init */
     camera_t    camera;
