@@ -40,3 +40,7 @@ Le rendu ASCII nous a semblé intéressant car il nous permettrait de visualiser
 *   [Minimal theme](https://github.com/pages-themes/minimal)
 *   [Unity](http://www.throwtheswitch.org/unity)
 *   [ncurses](https://invisible-island.net/ncurses/)
+
+
+## Historique de développement
+![Historique de commits]({{site.imgpath}}commit_history.png)
