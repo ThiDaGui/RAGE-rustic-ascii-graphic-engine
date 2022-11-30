@@ -7,7 +7,8 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror -Wall -Wextra")
 set(CURSES_NEED_NCURSES 1)
 find_package(Curses REQUIRED)
 include_directories(
-        ${CURSES_INCLUDE_DIR}
+	includes
+	${CURSES_INCLUDE_DIR}
 )
 
 # Create libraries
@@ -19,11 +20,12 @@ add_subdirectory(src)
 
 add_executable(rage_app main.c)
 target_link_libraries(rage_app
-	api_lib
-	win_lib
-	obj_parser_lib
-	projection_lib
-	${PANEL_LIBRARIES}
-	${CURSES_LIBRARIES}
-	m
+	PRIVATE
+		api_lib
+		win_lib
+		obj_parser_lib
+		projection_lib
+		${PANEL_LIBRARIES}
+		${CURSES_LIBRARIES}
+		m
 )
