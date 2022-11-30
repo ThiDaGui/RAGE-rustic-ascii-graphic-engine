@@ -4,24 +4,30 @@
 
 Inside the root directory run CMake:
 
+### DEBUG MOD
 ```
-~$ cmake .
+~$ cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug
+```
+
+### RELEASE MOD
+```
+~$ cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
 ```
 
 After this you need to compile project using the generated Makefile as follows:
 
 ```
-~$ make
+~$ cmake --build build/
 ```
 
 That's it! If everything went right, you should see a lot of text, and RAGE should be compiled and ready to be executed!
 
 ## Running RAGE
 
-After compilation, execute the generated `rage_app` file with the .obj file you desire to visualize.
+After compilation, execute the generated `rage_app` (in `build/`) file with the .obj file you desire to visualize.
 
 ```
-~$ ./rage_app -f .models/suzanne.obj
+~$ ./build/rage_app -f .models/suzanne.obj
 ```
 
 Usage `--usage`:
