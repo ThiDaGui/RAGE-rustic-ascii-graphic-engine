@@ -3,21 +3,21 @@
 
 #include "obj.h"
 
-#define PARSER_SUCCESS                  (0)
-#define PARSER_ERROR                    (-1)
-#define PARSER_ERROR_OBJ_NULL           (-2)
-#define PARSER_ERROR_FACE_NULL          (-3)
-#define PARSER_ERROR_INVALID_FILE       (-4)
-#define PARSER_ERROR_OBJ_NOT_VALID      (-5)
-#define PARSER_ERROR_EMPTY_STRING       (-6)
-#define PARSER_ERROR_OVERFLOW           (-7)
-#define PARSER_ERROR_STRTOUL            (-8)
-#define PARSER_ERROR_INDEX_ZERO         (-9)
-#define PARSER_ERROR_EMPTY_VERTEX       (-10)
-#define PARSER_ERROR_UNKNOWN_VERTEX     (-11)
-#define PARSER_ERROR_INVALID_FACE       (-12)
-#define PARSER_ERROR_VERTEX_NULL        (-13)
-#define PARSER_ERROR_EMPTY_COORDINATE   (-14)
+#define PARSER_SUCCESS (0)
+#define PARSER_ERROR (-1)
+#define PARSER_ERROR_OBJ_NULL (-2)
+#define PARSER_ERROR_FACE_NULL (-3)
+#define PARSER_ERROR_INVALID_FILE (-4)
+#define PARSER_ERROR_OBJ_NOT_VALID (-5)
+#define PARSER_ERROR_EMPTY_STRING (-6)
+#define PARSER_ERROR_OVERFLOW (-7)
+#define PARSER_ERROR_STRTOUL (-8)
+#define PARSER_ERROR_INDEX_ZERO (-9)
+#define PARSER_ERROR_EMPTY_VERTEX (-10)
+#define PARSER_ERROR_UNKNOWN_VERTEX (-11)
+#define PARSER_ERROR_INVALID_FACE (-12)
+#define PARSER_ERROR_VERTEX_NULL (-13)
+#define PARSER_ERROR_EMPTY_COORDINATE (-14)
 #define PARSER_ERROR_UNKNOWN_COORDINATE (-15)
 #define PARSER_ERROR_MISSING_COORDINATE (-16)
 
@@ -29,7 +29,7 @@
  * indicating that is a vertex.
  * @return 0 if the operation was successful, a negative value otherwise.
  */
-int     parse_vertex(vector3_t *v, char *s);
+int parse_vertex(vector3_t *v, char *s);
 
 /**
  * Parse an string containing the data of a face element and its vertex
@@ -40,7 +40,7 @@ int     parse_vertex(vector3_t *v, char *s);
  * indicating that is a face.
  * @return 0 if the operation was successful, a negative value otherwise.
  */
-int     parse_face(face_t *face, char *s);
+int parse_face(face_t *face, char *s);
 
 /**
  * Parse the content of a well formatted Wavefront .obj file.
@@ -48,6 +48,6 @@ int     parse_face(face_t *face, char *s);
  * @param filename The name of the file to try to parse.
  * @return 0 if the operation was successful, a negative value otherwise.
  */
-int     parse_obj_file(obj_t *obj, const char *filename);
+int parse_obj_file(obj_t *obj, const char *filename);
 
 #endif
