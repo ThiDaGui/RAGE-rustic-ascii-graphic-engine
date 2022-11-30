@@ -1,6 +1,7 @@
+#include "tmatrix.h"
+
 #include <stddef.h>
 #include <string.h>
-#include "tmatrix.h"
 
 int tmatrix_init(tmatrix_t *tmatrix)
 {
@@ -16,10 +17,12 @@ int tm_dot_tm(tmatrix_t *A, tmatrix_t *B, tmatrix_t *result)
     {
         for (size_t j = 0; j < TMATRIX_SIZE; j++)
         {
-            result->data[TMATRIX_SIZE*i + j] = 0;
+            result->data[TMATRIX_SIZE * i + j] = 0;
             for (size_t k = 0; k < TMATRIX_SIZE; k++)
             {
-                result->data[TMATRIX_SIZE * i + j] += A->data[TMATRIX_SIZE * i + k] * B->data[TMATRIX_SIZE * k + j];
+                result->data[TMATRIX_SIZE * i + j] +=
+                    A->data[TMATRIX_SIZE * i + k]
+                    * B->data[TMATRIX_SIZE * k + j];
             }
         }
     }

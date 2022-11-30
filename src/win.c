@@ -1,7 +1,8 @@
 #include <ncurses.h>
 
-WINDOW      *window_create(int width, int height, int startx, int starty) {
-    WINDOW  *win = newwin(height, width, starty, startx);
+WINDOW *window_create(int width, int height, int startx, int starty)
+{
+    WINDOW *win = newwin(height, width, starty, startx);
     if (win == NULL)
         return NULL;
 
@@ -10,7 +11,8 @@ WINDOW      *window_create(int width, int height, int startx, int starty) {
     return win;
 }
 
-void        window_delete(WINDOW *win) {
+void window_delete(WINDOW *win)
+{
     wrefresh(win);
     delwin(win);
 }
