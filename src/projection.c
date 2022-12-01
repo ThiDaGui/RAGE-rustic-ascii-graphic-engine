@@ -8,6 +8,18 @@
 #include "rasterizer.h"
 #include "vector3.h"
 
+void init_z_buffer(size_t height, size_t width, float *dst)
+{
+    static float *z_buffer = NULL;
+    if (z_buffer == NULL)
+    {
+        z_buffer = malloc(height * width * sizeof(float));
+        for (size_t i = 0; i < width * height; i++)
+            z_buffer[i] = 1.0f;
+    }
+    dst = memcpy(dst, z_buffer, height * width * sizeof(float));
+}
+
 int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
 {
     vector3_t *triangle[3];
@@ -18,9 +30,9 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
      * vectors used to calculate each tri normal
      */
     vector3_t view = VECTOR3_INIT;
-    vector3_t AB = VECTOR3_INIT;
-    vector3_t AC = VECTOR3_INIT;
-    vector3_t N = VECTOR3_INIT;
+    vector3_t v_side_1 = VECTOR3_INIT;
+    vector3_t v_side_2 = VECTOR3_INIT;
+    vector3_t v_normal = VECTOR3_INIT;
 
     /*
      * vectors used to express the matrix world_to_view
@@ -41,11 +53,8 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
 
     float color;
 
-    float z_buffer[camera->height
-                   * camera->width]; // need a more efficient way of doing this
-                                     // (maybe memcpy ?)
-    for (size_t i = 0; i < camera->width * camera->height; i++)
-        z_buffer[i] = 1.0f;
+    float z_buffer[camera->height * camera->width];
+    init_z_buffer(camera->height, camera->width, z_buffer);
 
     for (size_t i = 0; i < 3; i++)
         projTriangle[i] = VECTOR3_INIT;
@@ -91,8 +100,8 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
     camera_ux.z = camera_ux.z * norm;
 
     /*
-     * camera_look_at and camera_right are already normalized, no need to do it
-     * to camera_down
+     * camera_look_at and camera_right are already normalized, no need to do
+     * it to camera_down
      */
     v_cross_v(&camera_uz, &camera_ux, &camera_uy);
 
@@ -131,30 +140,31 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
         }
         /*
          * calculate the triangle normal for the backface culling
-         * AB dot AC then normalize
+         * v_side_1 dot v_side_2 then normalize
          */
 
         // calculate the normal
-        vector3_set(&AB, triangle[1]->x - triangle[0]->x,
+        vector3_set(&v_side_1, triangle[1]->x - triangle[0]->x,
                     triangle[1]->y - triangle[0]->y,
                     triangle[1]->z - triangle[0]->z);
-        vector3_set(&AC, triangle[2]->x - triangle[0]->x,
+        vector3_set(&v_side_2, triangle[2]->x - triangle[0]->x,
                     triangle[2]->y - triangle[0]->y,
                     triangle[2]->z - triangle[0]->z);
-        v_cross_v(&AB, &AC, &N);
+        v_cross_v(&v_side_1, &v_side_2, &v_normal);
 
         // normalize
-        norm = fastisqrt(N.x * N.x + N.y * N.y + N.z * N.z);
-        N.x = N.x * norm;
-        N.y = N.y * norm;
-        N.z = N.z * norm;
+        norm = fastisqrt(v_normal.x * v_normal.x + v_normal.y * v_normal.y
+                         + v_normal.z * v_normal.z);
+        v_normal.x = v_normal.x * norm;
+        v_normal.y = v_normal.y * norm;
+        v_normal.z = v_normal.z * norm;
 
         // backface culling
         float culling;
         vector3_set(&view, triangle[0]->x - camera->position->x,
                     triangle[0]->y - camera->position->y,
                     triangle[0]->z - camera->position->z);
-        v_dot_v(&view, &N, &culling);
+        v_dot_v(&view, &v_normal, &culling);
 
         if (culling > 0)
             continue;
@@ -172,7 +182,7 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
         }
 
         // Proto coloration
-        v_dot_v(light, &N, &color);
+        v_dot_v(light, &v_normal, &color);
         color = min(color, 255);
         color = max(1, color);
 

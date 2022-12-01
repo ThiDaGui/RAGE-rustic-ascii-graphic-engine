@@ -23,6 +23,7 @@ vector3_t *vector3_init(void);
  * @param v The `vector3_t` to free.
  */
 void vector3_free(vector3_t *v);
+
 /**
  * set x, y and z of an initialize `vector3_t` to the values given
  * @param v The `vector3_t` to set
