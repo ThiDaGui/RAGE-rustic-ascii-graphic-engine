@@ -21,7 +21,7 @@
  */
 int parse_line(obj_t *obj, const char *line)
 {
-    /* Duplicated line since 'strtok_r' does not works on constant variables */
+    /* Duplicated line since 'strtok_r' does not work on constant variables */
     char *line_copy = strdup(line);
 
     char *save_ptr;

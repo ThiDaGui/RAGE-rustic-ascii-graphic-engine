@@ -9,12 +9,9 @@
 #define max(a, b) ((a) >= (b) ? (a) : (b))
 #define min(a, b) ((a) <= (b) ? (a) : (b))
 
-void plotLineLow(int x0, int y0, int x1, int y1, int image[], size_t width,
-                 size_t n);
-void plotLineHigh(int x0, int y0, int x1, int y1, int image[], size_t width,
-                  size_t n);
-void plotLine(int x0, int y0, int x1, int y1, int image[], size_t width,
-              size_t n);
+void plotLineLow(int x0, int y0, int x1, int y1, int image[], size_t width);
+void plotLineHigh(int x0, int y0, int x1, int y1, int image[], size_t width);
+void plotLine(int x0, int y0, int x1, int y1, int image[], size_t width);
 float edgeFunction(vector3_t *v1, vector3_t *v2, vector3_t *v3);
 void build_triangle(vector3_t *v1, vector3_t *v2, vector3_t *v3, int color,
                     int *image, float *z_buffer, size_t width, size_t height);

@@ -6,8 +6,7 @@
 
 #include "vector3.h"
 
-void plotLineLow(int x0, int y0, int x1, int y1, int image[], size_t width,
-                 size_t n)
+void plotLineLow(int x0, int y0, int x1, int y1, int image[], size_t width)
 {
     int dx = x1 - x0;
     int dy = y1 - y0;
@@ -23,7 +22,6 @@ void plotLineLow(int x0, int y0, int x1, int y1, int image[], size_t width,
     for (int x = x0; x <= x1; x++)
     {
         image[x * ((int)width) + y] = 1;
-        n += 1;
         if (D > 0)
         {
             y = y + yi;
@@ -33,8 +31,7 @@ void plotLineLow(int x0, int y0, int x1, int y1, int image[], size_t width,
             D = D + 2 * dy;
     }
 }
-void plotLineHigh(int x0, int y0, int x1, int y1, int image[], size_t width,
-                  size_t n)
+void plotLineHigh(int x0, int y0, int x1, int y1, int image[], size_t width)
 {
     int dx = x1 - x0;
     int dy = y1 - y0;
@@ -49,7 +46,6 @@ void plotLineHigh(int x0, int y0, int x1, int y1, int image[], size_t width,
     for (int y = y0; y <= y1; y++)
     {
         image[x * ((int)width) + y] = 1;
-        n += 1;
         if (D > 0)
         {
             x = x + xi;
@@ -59,18 +55,17 @@ void plotLineHigh(int x0, int y0, int x1, int y1, int image[], size_t width,
             D = D + 2 * dx;
     }
 }
-void plotLine(int x0, int y0, int x1, int y1, int image[], size_t width,
-              size_t n)
+void plotLine(int x0, int y0, int x1, int y1, int image[], size_t width)
 {
     if (abs(y1 - y0) < abs(x1 - x0))
         if (x0 > x1)
-            plotLineLow(x1, y1, x0, y0, image, width, n);
+            plotLineLow(x1, y1, x0, y0, image, width);
         else
-            plotLineLow(x0, y0, x1, y1, image, width, n);
+            plotLineLow(x0, y0, x1, y1, image, width);
     else if (y0 > y1)
-        plotLineHigh(x1, y1, x0, y0, image, width, n);
+        plotLineHigh(x1, y1, x0, y0, image, width);
     else
-        plotLineHigh(x0, y0, x1, y1, image, width, n);
+        plotLineHigh(x0, y0, x1, y1, image, width);
 }
 
 float edgeFunction(vector3_t *v1, vector3_t *v2, vector3_t *v3)
@@ -99,8 +94,8 @@ void build_triangle(vector3_t *v1, vector3_t *v2, vector3_t *v3, int color,
     {
         for (int x = x_min; x <= x_max; x++)
         {
-            p.x = x + 0.5;
-            p.y = y + 0.5;
+            p.x = (float)x + 0.5f;
+            p.y = (float)y + 0.5f;
             p.z = 0;
             float w1 = edgeFunction(v2, v3, &p);
             float w2 = edgeFunction(v3, v1, &p);

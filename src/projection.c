@@ -4,7 +4,6 @@
 #include <math.h>
 
 #include "api.h"
-#include "parser.h"
 #include "rasterizer.h"
 #include "vector3.h"
 
@@ -17,7 +16,7 @@ void init_z_buffer(size_t height, size_t width, float *dst)
         for (size_t i = 0; i < width * height; i++)
             z_buffer[i] = 1.0f;
     }
-    dst = memcpy(dst, z_buffer, height * width * sizeof(float));
+    memcpy(dst, z_buffer, height * width * sizeof(float));
 }
 
 int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
@@ -177,8 +176,8 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
         // Clipping space -> Screen space
         for (size_t i = 0; i < 3; i++)
         {
-            projTriangle[i].x = 0.5f * (projTriangle[i].x + 1) * camera->width;
-            projTriangle[i].y = 0.5f * (projTriangle[i].y + 1) * camera->height;
+            projTriangle[i].x = 0.5f * (projTriangle[i].x + 1) * (float)camera->width;
+            projTriangle[i].y = 0.5f * (projTriangle[i].y + 1) * (float)camera->height;
         }
 
         // Proto coloration
