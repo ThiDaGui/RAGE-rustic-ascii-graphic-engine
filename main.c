@@ -8,10 +8,10 @@
 #include "projection.h"
 #include "win.h"
 
-float rect_avg(const int img[], int width, int height, int startX, int startY,
-               int rect_width, int rect_height);
+float rect_avg(const int img[], size_t width, size_t height, size_t startX, size_t startY,
+               size_t rect_width, size_t rect_height);
 
-void image2ascii(WINDOW *win, const int img[], int width, int height,
+void image2ascii(WINDOW *win, const int img[], size_t width, size_t height,
                  int char_width, int char_height);
 
 void init_camera(camera_t *cam, float fov, size_t width, size_t height,
@@ -235,14 +235,14 @@ static char ascii_chars[] = {
     'k',  'h', 'a',  'o', '*', '#', 'M', 'W', '&', '8', '%', 'B', '@', '$'
 };
 
-float rect_avg(const int img[], int width, int height, int startX, int startY,
-               int rect_width, int rect_height)
+float rect_avg(const int img[], size_t width, size_t height, size_t startX, size_t startY,
+               size_t rect_width, size_t rect_height)
 {
     float sum = 0, count = 0;
 
-    for (int i = 0; i < rect_width && startX + i < width; ++i)
+    for (size_t i = 0; i < rect_width && startX + i < width; ++i)
     {
-        for (int j = 0; j < rect_height && startY + j < height; ++j)
+        for (size_t j = 0; j < rect_height && startY + j < height; ++j)
         {
             sum += (float)img[(startY + j) * width + (startX + i)];
             count += 1;
@@ -254,13 +254,13 @@ float rect_avg(const int img[], int width, int height, int startX, int startY,
     return sum / count;
 }
 
-void image2ascii(WINDOW *win, const int img[], int width, int height,
+void image2ascii(WINDOW *win, const int img[], size_t width, size_t height,
                  int char_width, int char_height)
 {
     float val;
-    for (int i = 0; i < height; i += char_height)
+    for (size_t i = 0; i < height; i += char_height)
     {
-        for (int j = 0; j < width; j += char_width)
+        for (size_t j = 0; j < width; j += char_width)
         {
             val = rect_avg(img, width, height, j, i, char_width, char_height)
                 / 255;

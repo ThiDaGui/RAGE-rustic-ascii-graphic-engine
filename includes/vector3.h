@@ -14,7 +14,7 @@ extern const vector3_t VECTOR3_INIT;
 
 /**
  * Allocate and initializes a `vector3_t` to zero.
- * @return The initialized `vector_t`.
+ * @return The initialized `vector3_t`.
  */
 vector3_t *vector3_init(void);
 
