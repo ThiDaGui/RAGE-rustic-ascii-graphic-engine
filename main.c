@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
     float camera_pos_norm = INITIAL_POS_NORM;
 
     /* Initialize image */
-    int image[camera.height * camera.width];
+    int *image = calloc(camera.width * camera.height, sizeof(int));
     redraw(win, &camera, &light, obj, image, theta, phi, camera_pos_norm);
 
     /* Draw status bar */
