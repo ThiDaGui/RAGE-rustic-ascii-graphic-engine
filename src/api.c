@@ -4,10 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "tmatrix.h"
+#include "t_matrix.h"
 #include "vector3.h"
 
-int v_dot_m(vector3_t *b, tmatrix_t *a, vector3_t *result)
+int v_dot_m(vector3_t *b, t_matrix_t *a, vector3_t *result)
 {
     result->x = (((a->data[0]) * b->x) + ((a->data[4]) * b->y)
                  + ((a->data[8]) * b->z) + ((a->data[12])));

@@ -23,7 +23,7 @@ float *z_buffer_init(size_t height, size_t width)
     return memcpy(dest, z_buffer, height * width * sizeof(float));
 }
 
-tmatrix_t *world_to_view_init(camera_t *camera)
+t_matrix_t *world_to_view_init(camera_t *camera)
 {
     /*
      * floats used to express world_to_view
@@ -42,11 +42,11 @@ tmatrix_t *world_to_view_init(camera_t *camera)
     vector3_t camera_uy = VECTOR3_INIT;
     vector3_t camera_uz = *(camera->look_at);
 
-    tmatrix_t *world_to_view = malloc(sizeof(struct tmatrix_t));
+    t_matrix_t *world_to_view = malloc(sizeof(struct t_matrix_t));
     if (world_to_view == NULL)
         err(EXIT_FAILURE,
             "Error while allocating memory for world_to_view matrix");
-    tmatrix_init(world_to_view);
+    t_matrix_init(world_to_view);
 
     /*
      * Calculate the other vectors of the camera base (right/ux and down/uy)
@@ -72,6 +72,8 @@ tmatrix_t *world_to_view_init(camera_t *camera)
     v_dot_v(camera->position, &camera_uy, &pos_dot_uy);
     v_dot_v(camera->position, &camera_uz, &pos_dot_uz);
 
+
+
     world_to_view->data[0] = camera_ux.x;
     world_to_view->data[1] = camera_uy.x;
     world_to_view->data[2] = camera_uz.x;
@@ -89,13 +91,13 @@ tmatrix_t *world_to_view_init(camera_t *camera)
     return world_to_view;
 }
 
-tmatrix_t *view_to_clip_init(camera_t *camera)
+t_matrix_t *view_to_clip_init(camera_t *camera)
 {
-    tmatrix_t *view_to_clip = malloc(sizeof(struct tmatrix_t));
+    t_matrix_t *view_to_clip = malloc(sizeof(struct t_matrix_t));
     if (view_to_clip == NULL)
         err(EXIT_FAILURE,
             "Error while allocating memory for view_to_clip matrix");
-    tmatrix_init(view_to_clip);
+    t_matrix_init(view_to_clip);
 
     float aspectRatio = (float)camera->height / (float)camera->width;
     float zNear = 0.1f;
@@ -122,23 +124,30 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
     float *z_buffer = z_buffer_init(camera->height, camera->width);
 
     /*========================== object_to_world =============================*/
+
+    /*
+     * nothing here at the moment, the object is immobile at the center
+     */
+
     /*=========================== world_to_view ==============================*/
 
-    tmatrix_t *world_to_view = world_to_view_init(camera);
+    t_matrix_t *world_to_view = world_to_view_init(camera);
 
     /*=========================== view_to_clip ===============================*/
 
-    tmatrix_t *view_to_clip = view_to_clip_init(camera);
+    t_matrix_t *view_to_clip = view_to_clip_init(camera);
 
     /*============================ proj_matrix ===============================*/
 
-    tmatrix_t *proj_matrix = malloc(sizeof(struct tmatrix_t));
+    // proj_matrix = world_to_view @ view_to_clip
+
+    t_matrix_t *proj_matrix = malloc(sizeof(struct t_matrix_t));
     if (proj_matrix == NULL)
         err(EXIT_FAILURE,
             "Error while allocating memory for proj_matrix matrix");
-    tmatrix_init(proj_matrix);
+    t_matrix_init(proj_matrix);
 
-    tm_dot_tm(world_to_view, view_to_clip, proj_matrix);
+    t_matrix_dot_t_matrix(world_to_view, view_to_clip, proj_matrix);
 
     /*=============================== other ==================================*/
 

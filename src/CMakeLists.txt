@@ -39,10 +39,10 @@ add_library(matrix_lib STATIC matrix.c)
 
 
 ####################################
-# Create "tmatrix_lib" library
+# Create "t_matrix_lib" library
 ####################################
 
-add_library(tmatrix_lib STATIC tmatrix.c)
+add_library(t_matrix_lib STATIC t_matrix.c)
 
 ####################################
 # Create "api_lib" library
@@ -52,7 +52,7 @@ add_library(api_lib STATIC api.c)
 target_link_libraries(api_lib
 		PRIVATE
 		vector3_lib
-		tmatrix_lib
+		t_matrix_lib
 		)
 
 ####################################
