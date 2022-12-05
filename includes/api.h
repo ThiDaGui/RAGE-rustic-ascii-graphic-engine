@@ -5,9 +5,9 @@
 #include <string.h>
 
 #include "matrix.h"
-#include "tmatrix.h"
+#include "t_matrix.h"
 #include "vector3.h"
 
-int v_dot_m(vector3_t *, tmatrix_t *, vector3_t *);
+int v_dot_m(vector3_t *, t_matrix_t *, vector3_t *);
 float fastisqrt(float number);
 #endif
