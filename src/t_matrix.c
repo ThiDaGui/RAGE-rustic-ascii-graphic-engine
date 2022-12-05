@@ -11,6 +11,11 @@ int t_matrix_init(t_matrix_t *t_matrix)
     return 0;
 }
 
+t_matrix_t *t_matrix_set(t_matrix_t *t_matrix, float src[T_MATRIX_SIZE * T_MATRIX_SIZE])
+{
+    return memcpy(t_matrix->data, src, T_MATRIX_SIZE * T_MATRIX_SIZE * sizeof(float));
+}
+
 int t_matrix_dot_t_matrix(t_matrix_t *matrix_a, t_matrix_t *matrix_b, t_matrix_t *result)
 {
     for (size_t i = 0; i < T_MATRIX_SIZE; i++)
