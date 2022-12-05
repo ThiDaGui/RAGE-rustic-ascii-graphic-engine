@@ -72,23 +72,14 @@ t_matrix_t *world_to_view_init(camera_t *camera)
     v_dot_v(camera->position, &camera_uy, &pos_dot_uy);
     v_dot_v(camera->position, &camera_uz, &pos_dot_uz);
 
+    float data[T_MATRIX_SIZE * T_MATRIX_SIZE] = {
+        camera_ux.x, camera_uy.x, camera_uz.x, 0,
+        camera_ux.y, camera_uy.y, camera_uz.y, 0,
+        camera_ux.z, camera_uy.z, camera_uz.z, 0,
+        -pos_dot_ux, -pos_dot_uy, -pos_dot_uz, 1
+    };
 
-
-    world_to_view->data[0] = camera_ux.x;
-    world_to_view->data[1] = camera_uy.x;
-    world_to_view->data[2] = camera_uz.x;
-    world_to_view->data[4] = camera_ux.y;
-    world_to_view->data[5] = camera_uy.y;
-    world_to_view->data[6] = camera_uz.y;
-    world_to_view->data[8] = camera_ux.z;
-    world_to_view->data[9] = camera_uy.z;
-    world_to_view->data[10] = camera_uz.z;
-    world_to_view->data[12] = -pos_dot_ux;
-    world_to_view->data[13] = -pos_dot_uy;
-    world_to_view->data[14] = -pos_dot_uz;
-    world_to_view->data[15] = 1;
-
-    return world_to_view;
+    return t_matrix_set(world_to_view, data);
 }
 
 t_matrix_t *view_to_clip_init(camera_t *camera)
