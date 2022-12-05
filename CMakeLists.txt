@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16.3)
 project(RAGE)
 
 set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror -Wall -Wextra")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror -Wall -Wextra -pedantic -Wvla")
 
 set(CURSES_NEED_NCURSES 1)
 find_package(Curses REQUIRED)
