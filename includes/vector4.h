@@ -1,7 +1,9 @@
 #ifndef VECTOR4_H
 #define VECTOR4_H
 
-typedef struct
+#include "vector3.h"
+
+typedef struct vector4_t
 {
     float x;
     float y;
@@ -25,7 +27,7 @@ vector4_t *vector4_h_init(void);
 
 /**
  * Frees an initialized `vector3_t`.
- * @param v The `vector3_t` to free.
+ * @param vector4 The `vector3_t` to free.
  */
 void vector4_free(vector4_t *v);
 
@@ -37,11 +39,20 @@ void vector4_free(vector4_t *v);
  * @param z `float`
  * @param w `float`
  */
-void vector4_set(vector4_t *, float, float, float, float);
+void vector4_set(vector4_t *v, float x, float y, float z, float w);
 
 /**
- * Create a `vector4_t` from a `vector3_t`
+ * Create a homogenous `vector4_t` from a `vector3_t`.
+ * @param src The `vector3_t` to convert to `vector4_t`. vector3 needs to be
+ * freed outside of the function
  */
+vector4_t *vector4_from_vector3(vector3_t *src, vector4_t *dst);
+
+/**
+ * Create a `vector3_t` from a homogenous `vector4`
+ *
+ */
+vector3_t *vector3_from_vector4(vector4_t *src, vector3_t *dst);
 
 /* =================== Operations ============================= */
 
@@ -51,22 +62,30 @@ void vector4_set(vector4_t *, float, float, float, float);
  * @param v2 `vector4_t`
  * @param result `vector4_t`
  */
-void vector4_add(vector4_t *, vector4_t *, vector4_t *);
+void vector4_add(vector4_t *vector4_a, vector4_t *vector4_b, vector4_t *vector4_result);
+
+/**
+ * multiply a `vector4_t` by a real
+ * @param[in] lambda `float`
+ * @param[in] vector4 `vector4_t`
+ * @param[out] result `vector4_t`
+ */
+void vector4_multiply(float lambda, vector4_t *vector4, vector4_t *result);
 
 /**
  * dot product of two vector4_t and put the result in a float
- * @param v1 `vector4_t`
- * @param v2 `vector4_t`
- * @param result `float`
+ * @param[in] vector4_a `vector4_t`
+ * @param[in] vector4_b `vector4_t`
+ * @param[out] result `float`
  */
-int v_dot_v(vector4_t *, vector4_t *, float *);
+int vector4_dot_vector4(vector4_t *vector4_a, vector4_t *vector4_b, float *result);
 
 /**
  * cross product of two vector4_t and put the result in another vector4_t
- * @param v1 `vector4_t`
- * @param v2 `vector4_t`
- * @param result `vector4_t`
+ * @param[in] vector4_a
+ * @param[in] vector4_b
+ * @param[out] result
  */
-int v_cross_v(vector4_t *, vector4_t *, vector4_t *);
+int vector4_cross_vector4(vector4_t *vector4_a, vector4_t *vector4_b, vector4_t *result);
 
 #endif // VECTOR4_H
