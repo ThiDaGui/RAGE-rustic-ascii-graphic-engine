@@ -13,6 +13,9 @@ typedef struct vector4_t
 
 /* =================== Wrapping =============================== */
 
+extern const vector4_t VECTOR4_INIT;
+extern const vector4_t VECTOR4_H_INIT;
+
 /**
  * Allocate and initializes a `vector4_t` to zero.
  * @return The initialized `vector4_t`
@@ -62,7 +65,8 @@ vector3_t *vector3_from_vector4(vector4_t *src, vector3_t *dst);
  * @param v2 `vector4_t`
  * @param result `vector4_t`
  */
-void vector4_add(vector4_t *vector4_a, vector4_t *vector4_b, vector4_t *vector4_result);
+void vector4_add(vector4_t *vector4_a, vector4_t *vector4_b,
+                 vector4_t *vector4_result);
 
 /**
  * multiply a `vector4_t` by a real
@@ -78,7 +82,8 @@ void vector4_multiply(float lambda, vector4_t *vector4, vector4_t *result);
  * @param[in] vector4_b `vector4_t`
  * @param[out] result `float`
  */
-int vector4_dot_vector4(vector4_t *vector4_a, vector4_t *vector4_b, float *result);
+int vector4_dot_vector4(vector4_t *vector4_a, vector4_t *vector4_b,
+                        float *result);
 
 /**
  * cross product of two vector4_t and put the result in another vector4_t
@@ -86,6 +91,7 @@ int vector4_dot_vector4(vector4_t *vector4_a, vector4_t *vector4_b, float *resul
  * @param[in] vector4_b
  * @param[out] result
  */
-int vector4_cross_vector4(vector4_t *vector4_a, vector4_t *vector4_b, vector4_t *result);
+int vector4_cross_vector4(vector4_t *vector4_a, vector4_t *vector4_b,
+                          vector4_t *result);
 
 #endif // VECTOR4_H

@@ -3,7 +3,12 @@
 #include <err.h>
 #include <stdlib.h>
 
+#include "vector3.h"
+
 /* =================== Wrapping =============================== */
+
+const vector4_t VECTOR4_INIT = { 0, 0, 0, 0 };
+const vector4_t VECTOR4_H_INIT = { 0, 0, 0, 1 };
 
 vector4_t *vector4_init(void)
 {
@@ -39,14 +44,16 @@ void vector4_set(vector4_t *vector4, float x, float y, float z, float w)
     }
 }
 
-void vector4_from_vector3(vector3_t *vector3, vector4_t *result)
+vector4_t *vector4_from_vector3(vector3_t *vector3, vector4_t *result)
 {
     vector4_set(result, vector3->x, vector3->y, vector3->z, 1);
+    return result;
 }
 
-void vector3_from_vector4(vector4_t *vector4, vector3_t *result)
+vector3_t *vector3_from_vector4(vector4_t *vector4, vector3_t *result)
 {
     float one_over_w = 1 / vector4->w;
     vector3_set(result, vector4->x * one_over_w, vector4->y * one_over_w,
                 vector4->z * one_over_w);
+    return result;
 }
