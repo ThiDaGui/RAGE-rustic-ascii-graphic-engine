@@ -31,7 +31,7 @@ void vector3_free(vector3_t *v);
  * @param y `float`
  * @param z `float`
  */
-void vector3_set(vector3_t *, float, float, float);
+void vector3_set(vector3_t *vector3, float x, float y, float z);
 
 /* =================== Operations ============================= */
 
