@@ -5,6 +5,18 @@
 add_library(vector3_lib STATIC vector3.c)
 
 ####################################
+# Create "triangle_lib" library
+####################################
+
+add_library(triangle_lib STATIC triangle.c)
+
+####################################
+# Create "vector4_lib" library
+####################################
+
+add_library(vector4_lib STATIC vector4.c)
+
+####################################
 # Create "obj_lib" library
 ####################################
 
@@ -52,6 +64,7 @@ add_library(api_lib STATIC api.c)
 target_link_libraries(api_lib
 		PRIVATE
 		vector3_lib
+		vector4_lib
 		t_matrix_lib
 		)
 
@@ -77,6 +90,8 @@ target_link_libraries(projection_lib
 		obj_parser_lib
 		api_lib
 		vector3_lib
+		vector4_lib
+		triangle_lib
 		rasterizer_lib
 		m
 )

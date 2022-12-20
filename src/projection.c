@@ -2,10 +2,13 @@
 
 #include <err.h>
 #include <math.h>
+#include <stdlib.h>
 
 #include "api.h"
 #include "rasterizer.h"
+#include "triangle.h"
 #include "vector3.h"
+#include "vector4.h"
 
 float *z_buffer_init(size_t height, size_t width)
 {
@@ -143,11 +146,16 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
     /*=============================== other ==================================*/
 
     face_t *face;
-    vector3_t *triangle[3];
-    vector3_t proj_triangle[3] = { VECTOR3_INIT, VECTOR3_INIT, VECTOR3_INIT };
+    triangle_t triangle = { VECTOR3_INIT, VECTOR3_INIT, VECTOR3_INIT };
+    vector4_t h_triangle[3] = { VECTOR4_H_INIT, VECTOR4_H_INIT,
+                                VECTOR4_H_INIT };
+
+    triangle_t proj_triangle = { VECTOR3_INIT, VECTOR3_INIT, VECTOR3_INIT };
+    vector4_t h_proj_triangle[3] = { VECTOR4_H_INIT, VECTOR4_H_INIT,
+                                     VECTOR4_H_INIT };
 
     /*
-     * vectors used to calculate each tri normal
+     * vectors used to calculate each triangle normal
      */
     vector3_t view = VECTOR3_INIT;
     vector3_t v_side_1 = VECTOR3_INIT;
@@ -166,7 +174,7 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
 
         for (size_t i = 0; i < 3; i++)
         {
-            triangle[i] = object->vertices[face->v_indices[i] - 1];
+            triangle[i] = *(object->vertices[face->v_indices[i] - 1]);
         }
         /*
          * calculate the triangle normal for the backface culling
@@ -174,12 +182,12 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
          */
 
         // calculate the normal
-        vector3_set(&v_side_1, triangle[1]->x - triangle[0]->x,
-                    triangle[1]->y - triangle[0]->y,
-                    triangle[1]->z - triangle[0]->z);
-        vector3_set(&v_side_2, triangle[2]->x - triangle[0]->x,
-                    triangle[2]->y - triangle[0]->y,
-                    triangle[2]->z - triangle[0]->z);
+        vector3_set(&v_side_1, triangle[1].x - triangle[0].x,
+                    triangle[1].y - triangle[0].y,
+                    triangle[1].z - triangle[0].z);
+        vector3_set(&v_side_2, triangle[2].x - triangle[0].x,
+                    triangle[2].y - triangle[0].y,
+                    triangle[2].z - triangle[0].z);
         v_cross_v(&v_side_1, &v_side_2, &v_normal);
 
         // normalize
@@ -191,20 +199,36 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
 
         // backface culling
         float culling;
-        vector3_set(&view, triangle[0]->x - camera->position->x,
-                    triangle[0]->y - camera->position->y,
-                    triangle[0]->z - camera->position->z);
+        vector3_set(&view, triangle[0].x - camera->position->x,
+                    triangle[0].y - camera->position->y,
+                    triangle[0].z - camera->position->z);
         v_dot_v(&view, &v_normal, &culling);
 
         if (culling > 0)
             continue;
 
-        // projection View -> Clipping space
-        v_dot_m(triangle[0], proj_matrix, proj_triangle + 0);
-        v_dot_m(triangle[1], proj_matrix, proj_triangle + 1);
-        v_dot_m(triangle[2], proj_matrix, proj_triangle + 2);
+        /*
+         * Projection and Clipping stages
+         */
 
-        // Clipping space -> Screen space
+        // World space -> Homogenous Clip space
+        vector4_from_vector3(&triangle[0], &h_triangle[0]);
+        vector4_dot_t_matrix(&h_triangle[0], proj_matrix, &h_proj_triangle[0]);
+
+        vector4_from_vector3(&triangle[1], &h_triangle[1]);
+        vector4_dot_t_matrix(&h_triangle[1], proj_matrix, &h_proj_triangle[1]);
+
+        vector4_from_vector3(&triangle[2], &h_triangle[2]);
+        vector4_dot_t_matrix(&h_triangle[2], proj_matrix, &h_proj_triangle[2]);
+
+        // Clipping stage
+
+        // Homogenise vector4 coordinates
+        vector3_from_vector4(&h_proj_triangle[0], &proj_triangle[0]);
+        vector3_from_vector4(&h_proj_triangle[1], &proj_triangle[1]);
+        vector3_from_vector4(&h_proj_triangle[2], &proj_triangle[2]);
+
+        // Homogenous Clip space -> Screen space
         for (size_t i = 0; i < 3; i++)
         {
             proj_triangle[i].x =
@@ -219,7 +243,10 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
         color = min(color, 255);
         color = max(1, color);
 
-        // Raster stage
+        /*
+         * Raster stage
+         */
+
         build_triangle(proj_triangle, proj_triangle + 1, proj_triangle + 2,
                        (int)color, image, z_buffer, camera->width,
                        camera->height);
