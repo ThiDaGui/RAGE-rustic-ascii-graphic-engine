@@ -9,7 +9,7 @@ RAGE support the wavefront .obj file format.
 
 ### Requirements
 
-RAGE is being developped with linux on mind and has not been tested on other OSs.
+RAGE is being developped with linux in mind and has not been tested on other OSs.
 
 To compile and run RAGE, you will need:
 * A C99 compiler.
