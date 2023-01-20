@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-const vector3_t VECTOR3_INIT = { 0, 0, 0 };
+const vector3_t VECTOR3_INIT = { 0 };
 
 void vector3_set(vector3_t *v, float x, float y, float z)
 {
