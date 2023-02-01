@@ -29,6 +29,14 @@ void vector3_free(vector3_t *v)
     free(v);
 }
 
+void vector3_linear(vector3_t *vector3_a, vector3_t *vector3_b, float lambda,
+                    vector3_t *result)
+{
+    result->x = vector3_a->x + lambda * vector3_b->x;
+    result->y = vector3_a->y + lambda * vector3_b->y;
+    result->z = vector3_a->z + lambda * vector3_b->z;
+}
+
 int v_dot_v(vector3_t *a, vector3_t *b, float *result)
 {
     *result = (a->x * b->x + a->y * b->y + a->z * b->z);

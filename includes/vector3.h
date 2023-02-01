@@ -41,7 +41,8 @@ void vector3_set(vector3_t *vector3, float x, float y, float z);
  * @param v2 `vector3_t`
  * @param result `vector3_t`
  */
-void vector3_add(vector3_t *, vector3_t *, vector3_t *);
+void vector3_linear(vector3_t *vector3_a, vector3_t *vector3_b, float lambda,
+                    vector3_t *result);
 
 /**
  * dot product of two vector3_t and put the result in a float

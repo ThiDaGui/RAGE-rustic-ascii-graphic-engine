@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "api.h"
+#include "h_triangle.h"
 #include "rasterizer.h"
 #include "triangle.h"
 #include "vector3.h"
@@ -151,7 +152,7 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
                                 VECTOR4_H_INIT };
 
     triangle_t proj_triangle = { VECTOR3_INIT, VECTOR3_INIT, VECTOR3_INIT };
-    vector4_t h_proj_triangle[3] = { VECTOR4_H_INIT, VECTOR4_H_INIT,
+    h_triangle_t h_proj_triangle = { VECTOR4_H_INIT, VECTOR4_H_INIT,
                                      VECTOR4_H_INIT };
 
     /*

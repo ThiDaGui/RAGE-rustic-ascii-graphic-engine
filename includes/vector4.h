@@ -65,8 +65,8 @@ vector3_t *vector3_from_vector4(vector4_t *src, vector3_t *dst);
  * @param v2 `vector4_t`
  * @param result `vector4_t`
  */
-void vector4_add(vector4_t *vector4_a, vector4_t *vector4_b,
-                 vector4_t *vector4_result);
+void vector4_linear(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
+                    vector4_t *vector4_result);
 
 /**
  * multiply a `vector4_t` by a real

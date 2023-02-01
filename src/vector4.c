@@ -57,3 +57,14 @@ vector3_t *vector3_from_vector4(vector4_t *vector4, vector3_t *result)
                 vector4->z * one_over_w);
     return result;
 }
+
+/* =================== Operations ============================= */
+
+void vector4_linear(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
+                    vector4_t *result)
+{
+    result->x = vector4_a->x + lambda * vector4_b->x;
+    result->y = vector4_a->y + lambda * vector4_b->y;
+    result->z = vector4_a->z + lambda * vector4_b->z;
+    result->w = vector4_a->w + lambda * vector4_b->w;
+}
