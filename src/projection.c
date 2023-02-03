@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "api.h"
+#include "clipping.h"
 #include "h_triangle.h"
 #include "rasterizer.h"
 #include "triangle.h"
@@ -154,6 +155,7 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
     triangle_t proj_triangle = { VECTOR3_INIT, VECTOR3_INIT, VECTOR3_INIT };
     h_triangle_t h_proj_triangle = { VECTOR4_H_INIT, VECTOR4_H_INIT,
                                      VECTOR4_H_INIT };
+    h_triangle_t *clipped_h_triangles = calloc(2, sizeof(h_triangle_t));
 
     /*
      * vectors used to calculate each triangle normal
@@ -224,36 +226,46 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
         vector4_dot_t_matrix(&h_triangle[2], proj_matrix, &h_proj_triangle[2]);
 
         // Clipping stage
+        vector4_t near_plane = { 0, 0, 1, 0 };
+        size_t nb_triangle =
+            clip_triangle(&h_proj_triangle, &near_plane, clipped_h_triangles);
 
-        // Homogenise vector4 coordinates
-        vector3_from_vector4(&h_proj_triangle[0], &proj_triangle[0]);
-        vector3_from_vector4(&h_proj_triangle[1], &proj_triangle[1]);
-        vector3_from_vector4(&h_proj_triangle[2], &proj_triangle[2]);
-
-        // Homogenous Clip space -> Screen space
-        for (size_t i = 0; i < 3; i++)
+        for (size_t iter = 0; iter < nb_triangle; iter++)
         {
-            proj_triangle[i].x =
-                0.5f * (proj_triangle[i].x + 1) * (float)camera->width;
-            proj_triangle[i].y =
-                0.5f * (proj_triangle[i].y + 1) * (float)camera->height;
+            // Homogenise vector4 coordinates
+            vector3_from_vector4(&h_proj_triangle[iter * 3 + 0],
+                                 &proj_triangle[0]);
+            vector3_from_vector4(&h_proj_triangle[iter * 3 + 1],
+                                 &proj_triangle[1]);
+            vector3_from_vector4(&h_proj_triangle[iter * 3 + 2],
+                                 &proj_triangle[2]);
+
+            // Homogenous Clip space -> Screen space
+            for (size_t i = 0; i < 3; i++)
+            {
+                proj_triangle[i].x =
+                    0.5f * (proj_triangle[i].x + 1) * (float)camera->width;
+                proj_triangle[i].y =
+                    0.5f * (proj_triangle[i].y + 1) * (float)camera->height;
+            }
+
+            // Proto coloration
+            float color;
+            v_dot_v(light, &v_normal, &color);
+            color = min(color, 255);
+            color = max(1, color);
+
+            /*
+             * Raster stage
+             */
+
+            build_triangle(proj_triangle, proj_triangle + 1, proj_triangle + 2,
+                           (int)color, image, z_buffer, camera->width,
+                           camera->height);
         }
-
-        // Proto coloration
-        float color;
-        v_dot_v(light, &v_normal, &color);
-        color = min(color, 255);
-        color = max(1, color);
-
-        /*
-         * Raster stage
-         */
-
-        build_triangle(proj_triangle, proj_triangle + 1, proj_triangle + 2,
-                       (int)color, image, z_buffer, camera->width,
-                       camera->height);
     }
 
+    free(clipped_h_triangles);
     free(view_to_clip);
     free(world_to_view);
     free(proj_matrix);

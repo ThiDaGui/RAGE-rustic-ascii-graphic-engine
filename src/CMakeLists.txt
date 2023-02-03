@@ -11,6 +11,12 @@ add_library(vector3_lib STATIC vector3.c)
 add_library(triangle_lib STATIC triangle.c)
 
 ####################################
+# Create "h_triangle_lib" library
+####################################
+
+add_library(h_triangle_lib STATIC h_triangle.c)
+
+####################################
 # Create "vector4_lib" library
 ####################################
 
@@ -78,7 +84,24 @@ target_link_libraries(rasterizer_lib
 		vector3_lib
 )
 
+####################################
+# Create "camera_lib" library
+####################################
+
 add_library(camera_lib STATIC camera.c)
+
+####################################
+# Create "clipping_lib" library
+####################################
+
+add_library(clipping_lib STATIC clipping.c)
+target_link_libraries(clipping_lib
+	PRIVATE
+		vector3_lib
+		vector4_lib
+		h_triangle_lib
+		triangle_lib
+)
 
 ####################################
 # Create "projection_lib" library
@@ -92,6 +115,8 @@ target_link_libraries(projection_lib
 		vector3_lib
 		vector4_lib
 		triangle_lib
+		h_triangle_lib
+		clipping_lib
 		rasterizer_lib
 		m
 )
