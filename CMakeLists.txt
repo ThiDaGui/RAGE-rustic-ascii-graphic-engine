@@ -29,3 +29,6 @@ target_link_libraries(rage_app
 		${CURSES_LIBRARIES}
 		m
 )
+
+include(CTest)
+add_subdirectory(tests)
