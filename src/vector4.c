@@ -58,6 +58,16 @@ vector3_t *vector3_from_vector4(vector4_t *vector4, vector3_t *result)
     return result;
 }
 
+vector4_t *vector4_normalize(vector4_t *vector4)
+{
+    float one_over_w = 1 / vector4->w;
+    vector4->x *= one_over_w;
+    vector4->y *= one_over_w;
+    vector4->z *= one_over_w;
+    vector4->w = 1;
+    return vector4;
+}
+
 /* =================== Operations ============================= */
 
 void vector4_linear(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,

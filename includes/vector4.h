@@ -57,6 +57,8 @@ vector4_t *vector4_from_vector3(vector3_t *src, vector4_t *dst);
  */
 vector3_t *vector3_from_vector4(vector4_t *src, vector3_t *dst);
 
+vector4_t *vector4_normalize(vector4_t *vector4);
+
 /* =================== Operations ============================= */
 
 /**

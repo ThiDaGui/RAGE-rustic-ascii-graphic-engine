@@ -11,7 +11,8 @@
 float vector4_against_plane(vector4_t *vector4, vector4_t *plane)
 {
     float res;
-    return vector4_dot_vector4(plane, vector4, &res);
+    vector4_dot_vector4(plane, vector4, &res);
+    return res;
 }
 
 vector4_t *clip_vector4(vector4_t *vertex_a, vector4_t *vertex_b,
@@ -23,27 +24,27 @@ vector4_t *clip_vector4(vector4_t *vertex_a, vector4_t *vertex_b,
 
     vector3_from_vector4(vertex_a, &vertex3_a);
     vector3_from_vector4(vertex_b, &vertex3_b);
-    vector3_from_vector4(plane, &plane_normale);
+    vector3_set(&plane_normale, plane->x, plane->y, plane->z);
 
     vector4_t b_minus_a;
-    vector4_linear(vertex_a, vertex_b, -1, &b_minus_a);
+    vector4_linear(vertex_b, vertex_a, -1.0f, &b_minus_a);
 
     vector3_t vector3_b_minus_a;
-
     vector3_linear(&vertex3_b, &vertex3_a, -1.0f, &vector3_b_minus_a);
 
     float vertex_a_dot_plane_normale;
     float b_minus_a_dot_plane_normale;
 
     v_dot_v(&vertex3_a, &plane_normale, &vertex_a_dot_plane_normale);
-    v_dot_v(&vertex3_b, &plane_normale, &b_minus_a_dot_plane_normale);
+    v_dot_v(&vector3_b_minus_a, &plane_normale, &b_minus_a_dot_plane_normale);
 
     float t =
         (-plane->w - vertex_a_dot_plane_normale) / b_minus_a_dot_plane_normale;
 
-    vector4_linear(vertex_a, vertex_b, t, result);
+    vector4_linear(vertex_a, &b_minus_a, t, result);
     return result;
 }
+
 /**
  * clip a segment against a plain
  *
@@ -69,7 +70,7 @@ int clip_segment(vector4_t *vertex_a, vector4_t *vertex_b, vector4_t *plane)
         }
         else
         {
-            clip_vector4(vertex_a, vertex_b, plane, vertex_a);
+            clip_vector4(vertex_b, vertex_a, plane, vertex_b);
             return 1;
         }
     }
@@ -88,9 +89,9 @@ int clip_segment(vector4_t *vertex_a, vector4_t *vertex_b, vector4_t *plane)
 
     else
     {
-        if (clipped_vector_a > 0)
+        if (clipped_vector_b > 0)
         {
-            clip_vector4(vertex_b, vertex_a, plane, vertex_b);
+            clip_vector4(vertex_a, vertex_b, plane, vertex_a);
             return 1;
         }
         else
