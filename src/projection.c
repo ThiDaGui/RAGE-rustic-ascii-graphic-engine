@@ -170,12 +170,13 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
     {
         face = object->faces[face_i];
         if (face->vertex_count != 3)
-            err(EXIT_FAILURE, "The objet is not composed of triangles");
+            errx(EXIT_FAILURE, "The objet is not composed of triangles\n");
 
         for (size_t i = 0; i < 3; i++)
         {
             triangle[i] = *(object->vertices[face->v_indices[i] - 1]);
         }
+
         /*
          * calculate the triangle normal for the backface culling
          * v_side_1 dot v_side_2 then normalize
