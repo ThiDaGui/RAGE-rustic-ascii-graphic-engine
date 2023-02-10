@@ -4,12 +4,13 @@
 #include <ncurses.h>
 #include <stdlib.h>
 
+#include "obj.h"
 #include "parser.h"
 #include "projection.h"
 #include "win.h"
 
-float rect_avg(const int img[], size_t width, size_t height, size_t startX, size_t startY,
-               size_t rect_width, size_t rect_height);
+float rect_avg(const int img[], size_t width, size_t height, size_t startX,
+               size_t startY, size_t rect_width, size_t rect_height);
 
 void image2ascii(WINDOW *win, const int img[], size_t width, size_t height,
                  int char_width, int char_height);
@@ -123,7 +124,7 @@ int main(int argc, char *argv[])
     obj_t *obj = obj_init();
     if (parse_obj_file(obj, args.filename) < 0)
     {
-        errx(1, "Error while parsing the object %s", args.filename);
+        errx(EXIT_FAILURE, "Error while parsing the object %s", args.filename);
     }
 
     /* NCurses Window */
@@ -219,6 +220,9 @@ int main(int argc, char *argv[])
         redraw(win, &camera, &light, obj, image, theta, phi, camera_pos_norm);
     }
 
+    free(image);
+    obj_free(obj);
+
     /* Window Cleanup */
     window_delete(win);
     window_delete(status_win);
@@ -235,8 +239,8 @@ static char ascii_chars[] = {
     'k',  'h', 'a',  'o', '*', '#', 'M', 'W', '&', '8', '%', 'B', '@', '$'
 };
 
-float rect_avg(const int img[], size_t width, size_t height, size_t startX, size_t startY,
-               size_t rect_width, size_t rect_height)
+float rect_avg(const int img[], size_t width, size_t height, size_t startX,
+               size_t startY, size_t rect_width, size_t rect_height)
 {
     float sum = 0, count = 0;
 
