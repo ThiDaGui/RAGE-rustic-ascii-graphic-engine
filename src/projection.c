@@ -56,6 +56,8 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
 
     face_t *face;
     triangle_t triangle = { VECTOR3_INIT, VECTOR3_INIT, VECTOR3_INIT };
+    h_triangle_t h_triangle = { VECTOR4_H_INIT, VECTOR4_H_INIT,
+                                VECTOR4_H_INIT };
     vector3_t triangle_normales[3] = { VECTOR3_INIT, VECTOR3_INIT,
                                        VECTOR3_INIT };
 
