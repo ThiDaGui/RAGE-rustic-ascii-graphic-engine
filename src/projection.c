@@ -56,8 +56,8 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
 
     face_t *face;
     triangle_t triangle = { VECTOR3_INIT, VECTOR3_INIT, VECTOR3_INIT };
-    vector4_t h_triangle[3] = { VECTOR4_H_INIT, VECTOR4_H_INIT,
-                                VECTOR4_H_INIT };
+    vector3_t triangle_normales[3] = { VECTOR3_INIT, VECTOR3_INIT,
+                                       VECTOR3_INIT };
 
     h_triangle_t proj_h_triangle = { VECTOR4_H_INIT, VECTOR4_H_INIT,
                                      VECTOR4_H_INIT };
@@ -106,6 +106,36 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
         v_normal.x *= norm;
         v_normal.y *= norm;
         v_normal.z *= norm;
+
+        bool is_full_back = true;
+        vector3_t origin = VECTOR3_INIT;
+        vector3_t view_origin = VECTOR3_INIT;
+        float dot_product;
+
+        for (size_t iter = 0; iter < 3 && is_full_back; iter++)
+        {
+            origin = triangle[iter];
+            vector3_linear(&origin, camera->position, -1, &view_origin);
+            v_dot_v(&view_origin, camera->look_at, &dot_product);
+            if (dot_product > 0)
+                is_full_back = false;
+        }
+
+        if (is_full_back)
+            continue;
+
+        v_dot_v(&v_normal, &view_origin, &dot_product);
+        if (dot_product > 0)
+            continue;
+
+        for (size_t i = 0; i < 3; i++)
+        {
+            size_t normale_i = face->vn_indices[i] - 1;
+            if (normale_i < object->vn_count)
+                triangle_normales[i] = *(object->normals[normale_i]);
+            else
+                triangle_normales[i] = v_normal;
+        }
 
         /*
          * Projection and Clipping stages
