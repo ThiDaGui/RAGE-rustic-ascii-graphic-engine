@@ -24,6 +24,7 @@ add_executable(rage_app main.c)
 target_link_libraries(rage_app
 	PRIVATE
 		api_lib
+		camera_lib
 		win_lib
 		obj_parser_lib
 		projection_lib

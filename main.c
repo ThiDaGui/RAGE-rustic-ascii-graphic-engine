@@ -4,6 +4,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 
+#include "camera.h"
 #include "obj.h"
 #include "parser.h"
 #include "projection.h"
@@ -145,11 +146,9 @@ int main(int argc, char *argv[])
 
     /* Camera init */
     camera_t camera;
-    vector3_t camera_pos = VECTOR3_INIT;
-    vector3_t camera_uz = VECTOR3_INIT;
 
-    init_camera(&camera, args.fov, (COLS - 1) * CHAR_WIDTH,
-                (LINES - 2) * CHAR_HEIGHT, &camera_pos, &camera_uz);
+    camera_init(&camera, args.fov, (COLS - 1) * CHAR_WIDTH,
+                (LINES - 2) * CHAR_HEIGHT);
 
     float theta = INITIAL_THETA;
     float phi = INITIAL_PHI;
@@ -294,6 +293,7 @@ void redraw(WINDOW *win, camera_t *camera, vector3_t *light, obj_t *obj,
                 camera_pos_norm * cosf(phi) * sinf(theta),
                 camera_pos_norm * sinf(phi));
 
+    update_projection_matrix(camera);
     clear_image_buffer(image, camera->width * camera->height);
     projection(obj, camera, light, image); // Update image
 

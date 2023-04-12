@@ -1,19 +1,13 @@
 #ifndef PROJECTION_H
 #define PROJECTION_H
+
+#include "camera.h"
 #include "obj.h"
 #include "vector3.h"
 
-typedef struct
-{
-    vector3_t *position;
-    vector3_t *look_at;
-    float fov;
-    size_t height;
-    size_t width;
-} camera_t;
-
 /**
- * project the object `object` on the buffer `image` according to the camera `camera`
+ * project the object `object` on the buffer `image` according to the camera
+ * `camera`
  * @param object the `obj_t` to be projected
  * @param camera the `camera_t` used to project
  * @param light is a `vector3_t` representing a direction light

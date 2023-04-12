@@ -13,13 +13,9 @@ void vector3_set(vector3_t *v, float x, float y, float z)
 
 vector3_t *vector3_init(void)
 {
-    vector3_t *v = (vector3_t *)malloc(sizeof(vector3_t));
+    vector3_t *v = calloc(1, sizeof(vector3_t));
     if (v == NULL)
         return NULL;
-
-    v->x = 0;
-    v->y = 0;
-    v->z = 0;
 
     return v;
 }
