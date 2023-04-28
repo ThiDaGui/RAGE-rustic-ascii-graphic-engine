@@ -52,7 +52,7 @@ void vector3_pc_BLERP(vector3_t *vector3_a, float z_a, float lambda_a,
     result->y = z
         * (lambda_a * vector3_a->y / z_a + lambda_b * vector3_b->y / z_b
            + lambda_c * vector3_c->y / z_c);
-    result->x = z
+    result->z = z
         * (lambda_a * vector3_a->z / z_a + lambda_b * vector3_b->z / z_b
            + lambda_c * vector3_c->z / z_c);
 }
