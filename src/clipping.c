@@ -8,6 +8,7 @@
 #include "triangle.h"
 #include "vector3.h"
 #include "vector4.h"
+#include "vertex.h"
 
 float vector4_against_plane(vector4_t *vector4, vector4_t *plane)
 {
@@ -16,19 +17,21 @@ float vector4_against_plane(vector4_t *vector4, vector4_t *plane)
     return res;
 }
 
-vector4_t *clip_vector4(vector4_t *vertex_a, vector4_t *vertex_b,
-                        vector4_t *plane, vector4_t *result)
+h_vertex_t *clip_vector4(h_vertex_t *vertex_a, h_vertex_t *vertex_b,
+                         vector4_t *plane, h_vertex_t *result)
 {
     vector3_t vertex3_a;
     vector3_t vertex3_b;
     vector3_t plane_normale;
 
-    vector3_set(&vertex3_a, vertex_a->x, vertex_a->y, vertex_a->z);
-    vector3_set(&vertex3_b, vertex_b->x, vertex_b->y, vertex_b->z);
+    vector3_set(&vertex3_a, vertex_a->position.x, vertex_a->position.y,
+                vertex_a->position.z);
+    vector3_set(&vertex3_b, vertex_b->position.x, vertex_b->position.y,
+                vertex_b->position.z);
     vector3_set(&plane_normale, plane->x, plane->y, plane->z);
 
     vector4_t b_minus_a;
-    vector4_linear(vertex_b, vertex_a, -1.0f, &b_minus_a);
+    vector4_linear(&vertex_b->position, &vertex_a->position, -1.0f, &b_minus_a);
 
     vector3_t vector3_b_minus_a;
     vector3_linear(&vertex3_b, &vertex3_a, -1.0f, &vector3_b_minus_a);
@@ -42,7 +45,7 @@ vector4_t *clip_vector4(vector4_t *vertex_a, vector4_t *vertex_b,
     float t =
         (-plane->w - vertex_a_dot_plane_normale) / b_minus_a_dot_plane_normale;
 
-    vector4_linear(vertex_a, &b_minus_a, t, result);
+    h_vertex_LERP(vertex_a, vertex_b, t, result);
     return result;
 }
 
@@ -59,10 +62,10 @@ vector4_t *clip_vector4(vector4_t *vertex_a, vector4_t *vertex_b,
  * 1 if the segment has been clipped: if it is the case the clipped segment is
  * in place
  */
-int clip_segment(vector4_t *vertex_a, vector4_t *vertex_b, vector4_t *plane)
+int clip_segment(h_vertex_t *vertex_a, h_vertex_t *vertex_b, vector4_t *plane)
 {
-    float clipped_vector_a = vector4_against_plane(vertex_a, plane);
-    float clipped_vector_b = vector4_against_plane(vertex_b, plane);
+    float clipped_vector_a = vector4_against_plane(&vertex_a->position, plane);
+    float clipped_vector_b = vector4_against_plane(&vertex_b->position, plane);
     if (clipped_vector_a > 0)
     {
         if (clipped_vector_b >= 0)
@@ -106,7 +109,7 @@ void clip_triange_case_one(h_triangle_t *h_triangle, size_t *before_queue,
                            size_t *behind_queue, vector4_t *plane,
                            h_triangle_t *result)
 {
-    vector4_t buf[2] = { 0 };
+    h_vertex_t buf[2] = { H_VERTEX_INIT, H_VERTEX_INIT };
     clip_vector4(&(*h_triangle)[behind_queue[0]],
                  &(*h_triangle)[before_queue[0]], plane, buf);
     clip_vector4(&(*h_triangle)[behind_queue[1]],
@@ -136,9 +139,9 @@ void clip_triange_case_two(h_triangle_t *h_triangle, size_t *before_queue,
                            size_t *behind_queue, vector4_t *plane,
                            h_triangle_t *result)
 {
-    vector4_t pivot = (*h_triangle)[behind_queue[0]];
+    h_vertex_t pivot = (*h_triangle)[behind_queue[0]];
 
-    vector4_t buf[2] = { 0 };
+    h_vertex_t buf[2] = { H_VERTEX_INIT, H_VERTEX_INIT };
 
     clip_vector4(&(*h_triangle)[before_queue[0]], &pivot, plane, buf);
     clip_vector4(&(*h_triangle)[before_queue[1]], &pivot, plane, buf + 1);
@@ -183,8 +186,8 @@ size_t clip_triangle(h_triangle_t *h_triangle, vector4_t *plane,
 
     for (size_t iter = 0; iter < 3; iter++)
     {
-        vector4_t current_vector = (*h_triangle)[iter];
-        float dist = vector4_against_plane(&current_vector, plane);
+        h_vertex_t current_vertex = (*h_triangle)[iter];
+        float dist = vector4_against_plane(&current_vertex.position, plane);
 
         if (dist > 0)
             before_queue[size_before++] = iter;

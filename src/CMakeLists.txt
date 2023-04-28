@@ -23,6 +23,12 @@ add_library(h_triangle_lib STATIC h_triangle.c)
 add_library(vector4_lib STATIC vector4.c)
 
 ####################################
+# Create "vertex_lib" library
+####################################
+
+add_library(vertex_lib STATIC vertex.c)
+
+####################################
 # Create "obj_lib" library
 ####################################
 
@@ -112,6 +118,7 @@ target_link_libraries(projection_lib
 	PRIVATE
 		obj_parser_lib
 		api_lib
+		vertex_lib
 		vector3_lib
 		vector4_lib
 		triangle_lib

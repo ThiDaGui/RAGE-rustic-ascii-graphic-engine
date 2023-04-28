@@ -77,15 +77,11 @@ float edgeFunction(vector3_t *v1, vector3_t *v2, vector3_t *v3)
 void build_triangle(vector3_t *v1, vector3_t *v2, vector3_t *v3, int color,
                     int *image, float *z_buffer, size_t width, size_t height)
 {
-    int x_min;
-    int x_max;
-    int y_min;
-    int y_max;
     // convert the vertices of the current triangle to raster space
-    x_max = min(floorf(max(max(v1->x, v2->x), v3->x)), width - 1);
-    y_max = min(floorf(max(max(v1->y, v2->y), v3->y)), height - 1);
-    x_min = max(floorf(min(min(v1->x, v2->x), v3->x)), 0);
-    y_min = max(floorf(min(min(v1->y, v2->y), v3->y)), 0);
+    int x_max = min(floorf(max(max(v1->x, v2->x), v3->x)), width - 1);
+    int y_max = min(floorf(max(max(v1->y, v2->y), v3->y)), height - 1);
+    int x_min = max(floorf(min(min(v1->x, v2->x), v3->x)), 0);
+    int y_min = max(floorf(min(min(v1->y, v2->y), v3->y)), 0);
 
     float area = edgeFunction(v1, v2, v3);
 
@@ -94,8 +90,8 @@ void build_triangle(vector3_t *v1, vector3_t *v2, vector3_t *v3, int color,
     {
         for (int x = x_min; x <= x_max; x++)
         {
-            p.x = (float)x + 0.5f;
-            p.y = (float)y + 0.5f;
+            p.x = x + 0.5f;
+            p.y = y + 0.5f;
             p.z = 0;
             float w1 = edgeFunction(v2, v3, &p);
             float w2 = edgeFunction(v3, v1, &p);
@@ -113,21 +109,15 @@ void build_triangle(vector3_t *v1, vector3_t *v2, vector3_t *v3, int color,
                          || (v2->y - v1->y) > 0))
                     || w3 > 0))
             {
-                {
-                    w1 /= area;
-                    w2 /= area;
-                    w3 /= area;
-                    float z = (w1 * (v1->z)) + (w2 * (v2->z)) + (w3 * (v3->z));
-                    // float z = oneOverZ;
+                w1 /= area;
+                w2 /= area;
+                w3 /= area;
+                float z = (w1 * (v1->z)) + (w2 * (v2->z)) + (w3 * (v3->z));
 
-                    // printf("%f \n",oneOverZ);
-                    // printf("%f \n",z);
-                    if (z < z_buffer[(size_t)y * width + (size_t)x])
-                    {
-                        // printf("%lu,%lu \n",x,y);
-                        z_buffer[(size_t)y * width + (size_t)x] = z;
-                        image[(size_t)y * width + (size_t)x] = color;
-                    }
+                if (z < z_buffer[(size_t)y * width + (size_t)x])
+                {
+                    z_buffer[(size_t)y * width + (size_t)x] = z;
+                    image[(size_t)y * width + (size_t)x] = color;
                 }
             }
         }

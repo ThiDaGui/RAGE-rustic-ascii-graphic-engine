@@ -44,6 +44,14 @@ void vector3_set(vector3_t *vector3, float x, float y, float z);
 void vector3_linear(vector3_t *vector3_a, vector3_t *vector3_b, float lambda,
                     vector3_t *result);
 
+void vector3_LERP(vector3_t *vector3_a, vector3_t *vector3_b, float lambda,
+                  vector3_t *result);
+
+void vector3_pc_BLERP(vector3_t *vector3_a, float z_a, float lambda_a,
+                      vector3_t *vector3_b, float z_b, float lambda_b,
+                      vector3_t *vector3_c, float z_c, float lambda_c, float z,
+                      vector3_t *result);
+
 /**
  * dot product of two vector3_t and put the result in a float
  * @param v1 `vector3_t`

@@ -79,6 +79,15 @@ void vector4_linear(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
     result->w = vector4_a->w + lambda * vector4_b->w;
 }
 
+void vector4_LERP(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
+                  vector4_t *result)
+{
+    result->x = (1 - lambda) * vector4_a->x + lambda * vector4_b->x;
+    result->y = (1 - lambda) * vector4_a->y + lambda * vector4_b->y;
+    result->z = (1 - lambda) * vector4_a->z + lambda * vector4_b->z;
+    result->w = (1 - lambda) * vector4_a->w + lambda * vector4_b->w;
+}
+
 int vector4_dot_vector4(vector4_t *vector4_a, vector4_t *vector4_b,
                         float *result)
 {

@@ -1,9 +1,9 @@
 #ifndef H_TRIANGLE_H
 #define H_TRIANGLE_H
 
-#include "vector4.h"
+#include "vertex.h"
 
-typedef vector4_t h_triangle_t[3];
+typedef h_vertex_t h_triangle_t[3];
 
 extern const h_triangle_t H_TRIANGLE_INIT;
 

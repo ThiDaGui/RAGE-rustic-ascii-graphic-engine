@@ -70,6 +70,9 @@ vector4_t *vector4_normalize(vector4_t *vector4);
 void vector4_linear(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
                     vector4_t *vector4_result);
 
+void vector4_LERP(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
+                  vector4_t *vector4_result);
+
 /**
  * multiply a `vector4_t` by a real
  * @param[in] lambda `float`

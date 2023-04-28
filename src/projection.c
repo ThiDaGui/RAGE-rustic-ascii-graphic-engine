@@ -15,6 +15,7 @@
 #include "triangle.h"
 #include "vector3.h"
 #include "vector4.h"
+#include "vertex.h"
 
 float *z_buffer_init(size_t height, size_t width)
 {
@@ -30,6 +31,129 @@ float *z_buffer_init(size_t height, size_t width)
 
     float *dest = malloc(height * width * sizeof(float));
     return memcpy(dest, z_buffer, height * width * sizeof(float));
+}
+
+void vertex_shader(t_matrix_t *proj_matrix, triangle_t triangle,
+                   h_triangle_t proj_h_triangle)
+{
+    vector4_t h_triangle[3] = { VECTOR4_H_INIT, VECTOR4_H_INIT,
+                                VECTOR4_H_INIT };
+
+    vector4_from_vector3(&triangle[0].position, &h_triangle[0]);
+    vector4_dot_t_matrix(&h_triangle[0], proj_matrix,
+                         &proj_h_triangle[0].position);
+    proj_h_triangle[0].normale = triangle[0].normale;
+
+    vector4_from_vector3(&triangle[1].position, &h_triangle[1]);
+    vector4_dot_t_matrix(&h_triangle[1], proj_matrix,
+                         &proj_h_triangle[1].position);
+    proj_h_triangle[1].normale = triangle[1].normale;
+
+    vector4_from_vector3(&triangle[2].position, &h_triangle[2]);
+    vector4_dot_t_matrix(&h_triangle[2], proj_matrix,
+                         &proj_h_triangle[2].position);
+    proj_h_triangle[2].normale = triangle[2].normale;
+}
+
+void screen_mapping_shader(h_triangle_t clipped_h_triangle, camera_t *camera,
+                           triangle_t clipped_triangle)
+{
+    vector3_from_vector4(&clipped_h_triangle[0].position,
+                         &clipped_triangle[0].position);
+    clipped_triangle[0].normale = clipped_h_triangle[0].normale;
+    vector3_from_vector4(&clipped_h_triangle[1].position,
+                         &clipped_triangle[1].position);
+    clipped_triangle[1].normale = clipped_h_triangle[1].normale;
+    vector3_from_vector4(&clipped_h_triangle[2].position,
+                         &clipped_triangle[2].position);
+    clipped_triangle[2].normale = clipped_h_triangle[2].normale;
+
+    // Homogenous Clip space -> Screen space
+    for (size_t i = 0; i < 3; i++)
+    {
+        clipped_triangle[i].position.x =
+            0.5f * (clipped_triangle[i].position.x + 1) * (float)camera->width;
+        clipped_triangle[i].position.y =
+            0.5f * (clipped_triangle[i].position.y + 1) * (float)camera->height;
+    }
+}
+
+void pixel_shader(triangle_t clipped_triangle, size_t pixel[2],
+                  vector3_t *light, camera_t *camera, int *image,
+                  float *z_buffer)
+{
+    vector3_t p = { pixel[0] + 0.5f, pixel[1] + 0.5f, camera->z_near };
+
+    float area = edgeFunction(&clipped_triangle[0].position,
+                              &clipped_triangle[1].position,
+                              &clipped_triangle[2].position);
+
+    float w1 = edgeFunction(&clipped_triangle[1].position,
+                            &clipped_triangle[2].position, &p);
+    float w2 = edgeFunction(&clipped_triangle[2].position,
+                            &clipped_triangle[0].position, &p);
+    float w3 = edgeFunction(&clipped_triangle[0].position,
+                            &clipped_triangle[1].position, &p);
+    if (((w1 == 0
+          && (((clipped_triangle[2].position.y - clipped_triangle[1].position.y)
+                   == 0
+               && (clipped_triangle[2].position.x
+                   - clipped_triangle[1].position.x)
+                   < 0)
+              || (clipped_triangle[2].position.y
+                  - clipped_triangle[1].position.y)
+                  > 0))
+         || w1 > 0)
+        && ((w2 == 0
+             && (((clipped_triangle[0].position.y
+                   - clipped_triangle[2].position.y)
+                      == 0
+                  && (clipped_triangle[0].position.x
+                      - clipped_triangle[2].position.x)
+                      < 0)
+                 || (clipped_triangle[0].position.y
+                     - clipped_triangle[2].position.y)
+                     > 0))
+            || w2 > 0)
+        && ((w3 == 0
+             && (((clipped_triangle[1].position.y
+                   - clipped_triangle[0].position.y)
+                      == 0
+                  && (clipped_triangle[1].position.x
+                      - clipped_triangle[0].position.x)
+                      < 0)
+                 || (clipped_triangle[1].position.y
+                     - clipped_triangle[0].position.y)
+                     > 0))
+            || w3 > 0))
+    {
+        w1 /= area;
+        w2 /= area;
+        w3 /= area;
+        float z = (w1 * (clipped_triangle[0].position.z))
+            + (w2 * (clipped_triangle[1].position.z))
+            + (w3 * (clipped_triangle[2].position.z));
+
+        vector3_t normale = VECTOR3_INIT;
+
+        vector3_pc_BLERP(
+            &clipped_triangle[0].normale, clipped_triangle[0].position.z, w1,
+            &clipped_triangle[1].normale, clipped_triangle[1].position.z, w2,
+            &clipped_triangle[2].normale, clipped_triangle[2].position.z, w3, z,
+            &normale);
+
+        float colorf;
+        v_dot_v(light, &normale, &colorf);
+        colorf = min(colorf, 255);
+        colorf = max(1, colorf);
+        int color = colorf;
+
+        if (z < z_buffer[pixel[1] * camera->width + pixel[0]])
+        {
+            z_buffer[pixel[1] * camera->width + pixel[0]] = z;
+            image[pixel[1] * camera->width + pixel[0]] = color;
+        }
+    }
 }
 
 int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
@@ -55,16 +179,27 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
     /*=============================== other ==================================*/
 
     face_t *face;
-    triangle_t triangle = { VECTOR3_INIT, VECTOR3_INIT, VECTOR3_INIT };
-    h_triangle_t h_triangle = { VECTOR4_H_INIT, VECTOR4_H_INIT,
-                                VECTOR4_H_INIT };
-    vector3_t triangle_normales[3] = { VECTOR3_INIT, VECTOR3_INIT,
-                                       VECTOR3_INIT };
+    triangle_t triangle = {
+        VERTEX_INIT,
+        VERTEX_INIT,
+        VERTEX_INIT,
+    };
 
-    h_triangle_t proj_h_triangle = { VECTOR4_H_INIT, VECTOR4_H_INIT,
-                                     VECTOR4_H_INIT };
-    h_triangle_t clipped_h_triangles[2] = { 0 };
-    triangle_t clipped_triangle = { 0 };
+    h_triangle_t proj_h_triangle = {
+        H_VERTEX_INIT,
+        H_VERTEX_INIT,
+        H_VERTEX_INIT,
+    };
+    h_triangle_t clipped_h_triangles[2] = {
+        { H_VERTEX_INIT, H_VERTEX_INIT, H_VERTEX_INIT },
+        { H_VERTEX_INIT, H_VERTEX_INIT, H_VERTEX_INIT },
+    };
+
+    triangle_t clipped_triangle = {
+        VERTEX_INIT,
+        VERTEX_INIT,
+        VERTEX_INIT,
+    };
 
     /*
      * vectors used to calculate each triangle normal
@@ -85,7 +220,7 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
 
         for (size_t i = 0; i < 3; i++)
         {
-            triangle[i] = *(object->vertices[face->v_indices[i] - 1]);
+            triangle[i].position = *(object->vertices[face->v_indices[i] - 1]);
         }
 
         /*
@@ -94,12 +229,12 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
          */
 
         // calculate the normal
-        vector3_set(&v_side_1, triangle[1].x - triangle[0].x,
-                    triangle[1].y - triangle[0].y,
-                    triangle[1].z - triangle[0].z);
-        vector3_set(&v_side_2, triangle[2].x - triangle[0].x,
-                    triangle[2].y - triangle[0].y,
-                    triangle[2].z - triangle[0].z);
+        vector3_set(&v_side_1, triangle[1].position.x - triangle[0].position.x,
+                    triangle[1].position.y - triangle[0].position.y,
+                    triangle[1].position.z - triangle[0].position.z);
+        vector3_set(&v_side_2, triangle[2].position.x - triangle[0].position.x,
+                    triangle[2].position.y - triangle[0].position.y,
+                    triangle[2].position.z - triangle[0].position.z);
         v_cross_v(&v_side_1, &v_side_2, &v_normal);
 
         // normalize
@@ -116,7 +251,7 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
 
         for (size_t iter = 0; iter < 3 && is_full_back; iter++)
         {
-            origin = triangle[iter];
+            origin = triangle[iter].position;
             vector3_linear(&origin, camera->position, -1, &view_origin);
             v_dot_v(&view_origin, camera->look_at, &dot_product);
             if (dot_product > 0)
@@ -134,9 +269,9 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
         {
             size_t normale_i = face->vn_indices[i] - 1;
             if (normale_i < object->vn_count)
-                triangle_normales[i] = *(object->normals[normale_i]);
+                triangle[i].normale = *(object->normals[normale_i]);
             else
-                triangle_normales[i] = v_normal;
+                triangle[i].normale = v_normal;
         }
 
         /*
@@ -144,14 +279,7 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
          */
 
         // World space -> Homogenous Clip space
-        vector4_from_vector3(&triangle[0], &h_triangle[0]);
-        vector4_dot_t_matrix(&h_triangle[0], proj_matrix, &proj_h_triangle[0]);
-
-        vector4_from_vector3(&triangle[1], &h_triangle[1]);
-        vector4_dot_t_matrix(&h_triangle[1], proj_matrix, &proj_h_triangle[1]);
-
-        vector4_from_vector3(&triangle[2], &h_triangle[2]);
-        vector4_dot_t_matrix(&h_triangle[2], proj_matrix, &proj_h_triangle[2]);
+        vertex_shader(proj_matrix, triangle, proj_h_triangle);
 
         // Clipping stage
         vector4_t near_plane = { 0, 0, 1, 0 };
@@ -162,24 +290,12 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
         for (size_t iter = 0; iter < nb_triangle; iter++)
         {
             // Homogenise vector4 coordinates
-            vector3_from_vector4(&clipped_h_triangles[iter][0],
-                                 &clipped_triangle[0]);
-            vector3_from_vector4(&clipped_h_triangles[iter][1],
-                                 &clipped_triangle[1]);
-            vector3_from_vector4(&clipped_h_triangles[iter][2],
-                                 &clipped_triangle[2]);
-
-            // Homogenous Clip space -> Screen space
-            for (size_t i = 0; i < 3; i++)
-            {
-                clipped_triangle[i].x =
-                    0.5f * (clipped_triangle[i].x + 1) * (float)camera->width;
-                clipped_triangle[i].y =
-                    0.5f * (clipped_triangle[i].y + 1) * (float)camera->height;
-            }
+            screen_mapping_shader(clipped_h_triangles[iter], camera,
+                                  clipped_triangle);
 
             // Proto coloration
             float color;
+
             v_dot_v(light, &v_normal, &color);
             color = min(color, 255);
             color = max(1, color);
@@ -188,9 +304,35 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
              * Raster stage
              */
 
-            build_triangle(clipped_triangle, clipped_triangle + 1,
-                           clipped_triangle + 2, color, image, z_buffer,
-                           camera->width, camera->height);
+            int x_max = min(floorf(max(max(clipped_triangle[0].position.x,
+                                           clipped_triangle[1].position.x),
+                                       clipped_triangle[2].position.x)),
+                            camera->width - 1);
+            int y_max = min(floorf(max(max(clipped_triangle[0].position.y,
+                                           clipped_triangle[1].position.y),
+                                       clipped_triangle[2].position.y)),
+                            camera->height - 1);
+            int x_min = max(floorf(min(min(clipped_triangle[0].position.x,
+                                           clipped_triangle[1].position.x),
+                                       clipped_triangle[2].position.x)),
+                            0);
+            int y_min = max(floorf(min(min(clipped_triangle[0].position.y,
+                                           clipped_triangle[1].position.y),
+                                       clipped_triangle[2].position.y)),
+                            0);
+
+            size_t p[2];
+            for (int y = y_min; y <= y_max; y++)
+            {
+                for (int x = x_min; x <= x_max; x++)
+                {
+                    p[0] = x;
+                    p[1] = y;
+
+                    pixel_shader(clipped_triangle, p, light, camera, image,
+                                 z_buffer);
+                }
+            }
         }
     }
 

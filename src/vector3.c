@@ -33,6 +33,30 @@ void vector3_linear(vector3_t *vector3_a, vector3_t *vector3_b, float lambda,
     result->z = vector3_a->z + lambda * vector3_b->z;
 }
 
+void vector3_LERP(vector3_t *vector3_a, vector3_t *vector3_b, float lambda,
+                  vector3_t *result)
+{
+    result->x = (1 - lambda) * vector3_a->x + lambda * vector3_b->x;
+    result->y = (1 - lambda) * vector3_a->y + lambda * vector3_b->y;
+    result->z = (1 - lambda) * vector3_a->z + lambda * vector3_b->z;
+}
+
+void vector3_pc_BLERP(vector3_t *vector3_a, float z_a, float lambda_a,
+                      vector3_t *vector3_b, float z_b, float lambda_b,
+                      vector3_t *vector3_c, float z_c, float lambda_c, float z,
+                      vector3_t *result)
+{
+    result->x = z
+        * (lambda_a * vector3_a->x / z_a + lambda_b * vector3_b->x / z_b
+           + lambda_c * vector3_c->x / z_c);
+    result->y = z
+        * (lambda_a * vector3_a->y / z_a + lambda_b * vector3_b->y / z_b
+           + lambda_c * vector3_c->y / z_c);
+    result->x = z
+        * (lambda_a * vector3_a->z / z_a + lambda_b * vector3_b->z / z_b
+           + lambda_c * vector3_c->z / z_c);
+}
+
 int v_dot_v(vector3_t *a, vector3_t *b, float *result)
 {
     *result = (a->x * b->x + a->y * b->y + a->z * b->z);

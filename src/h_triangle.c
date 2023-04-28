@@ -2,9 +2,11 @@
 
 #include <stdlib.h>
 
-const h_triangle_t H_TRIANGLE_INIT = { { 0.0f, 0.0f, 0.0f, 1.0f },
-                                       { 0.0f, 0.0f, 0.0f, 1.0f },
-                                       { 0.0f, 0.0f, 0.0f, 1.0f } };
+const h_triangle_t H_TRIANGLE_INIT = {
+    { { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f } },
+    { { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f } },
+    { { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f } },
+};
 
 h_triangle_t *h_triangle_init(void)
 {
