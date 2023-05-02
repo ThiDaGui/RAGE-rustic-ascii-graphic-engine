@@ -1,6 +1,9 @@
 #ifndef VECTOR3_H
 #define VECTOR3_H
-
+/**
+ * @struct vector3_t
+ * @brief is a 3d vector 
+ */
 typedef struct
 {
     float x;
@@ -13,19 +16,21 @@ typedef struct
 extern const vector3_t VECTOR3_INIT;
 
 /**
- * Allocate and initializes a `vector3_t` to zero.
+ * @fn vector3_t *vector3_init(void)
+ * @brief Allocate and initializes a `vector3_t` to zero.
  * @return The initialized `vector3_t`.
  */
 vector3_t *vector3_init(void);
 
 /**
- * Frees an initialized `vector3_t`.
+ * @fn void vector3_free(vector3_t *v)
+ * @brief Frees an initialized `vector3_t`.
  * @param v The `vector3_t` to free.
  */
 void vector3_free(vector3_t *v);
 
 /**
- * set x, y and z of an initialize `vector3_t` to the values given
+ * @brief set x, y and z of an initialize `vector3_t` to the values given
  * @param v The `vector3_t` to set
  * @param x `float`
  * @param y `float`
@@ -53,10 +58,11 @@ void vector3_pc_BLERP(vector3_t *vector3_a, float z_a, float lambda_a,
                       vector3_t *result);
 
 /**
- * dot product of two vector3_t and put the result in a float
+ * @brief dot product of two vector3_t and put the result in a float
  * @param v1 `vector3_t`
  * @param v2 `vector3_t`
  * @param result `float`
+ * @retval int
  */
 int v_dot_v(vector3_t *, vector3_t *, float *);
 
@@ -65,6 +71,7 @@ int v_dot_v(vector3_t *, vector3_t *, float *);
  * @param v1 `vector3_t`
  * @param v2 `vector3_t`
  * @param result `vector3_t`
+ * @retval int
  */
 int v_cross_v(vector3_t *, vector3_t *, vector3_t *);
 

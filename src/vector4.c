@@ -88,10 +88,9 @@ void vector4_LERP(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
     result->w = (1 - lambda) * vector4_a->w + lambda * vector4_b->w;
 }
 
-int vector4_dot_vector4(vector4_t *vector4_a, vector4_t *vector4_b,
+void vector4_dot_vector4(vector4_t *vector4_a, vector4_t *vector4_b,
                         float *result)
 {
     *result = (vector4_a->x * vector4_b->x + vector4_a->y * vector4_b->y
                + vector4_a->z * vector4_b->z + vector4_a->w * vector4_b->w);
-    return 0;
 }
