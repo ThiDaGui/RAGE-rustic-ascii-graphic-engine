@@ -103,6 +103,7 @@ add_library(camera_lib STATIC camera.c)
 add_library(clipping_lib STATIC clipping.c)
 target_link_libraries(clipping_lib
 	PRIVATE
+		vertex_lib
 		vector3_lib
 		vector4_lib
 		h_triangle_lib
