@@ -17,26 +17,24 @@
     {                                                                          \
         for (size_t iter = 0; iter < 3; iter++)                                \
         {                                                                      \
-            vector4_t x = X[iter];                                             \
-            vector4_t y = Y[iter];                                             \
+            vector4_t x = X[iter].position;                                    \
+            vector4_t y = Y[iter].position;                                    \
             ck_assert_vector4_eq(x, y);                                        \
         }                                                                      \
     }
 
 START_TEST(clip_triangle_before_plane)
 {
-    h_triangle_t h_triangle = {
-        { -1, -1, 1, 1 },
-        { -1, 1, 1, 1 },
-        { 1, 1, 1, 1 },
-    };
+    h_triangle_t h_triangle = { { { -1, -1, 1, 1 }, { 0 } },
+                                { { -1, 1, 1, 1 }, { 0 } },
+                                { { 1, 1, 1, 1 }, { 0 } } };
 
     vector4_t plane = { 0, 0, 1, 0 };
 
     h_triangle_t ref = {
-        { -1, -1, 1, 1 },
-        { -1, 1, 1, 1 },
-        { 1, 1, 1, 1 },
+        { { -1, -1, 1, 1 }, { 0 } },
+        { { -1, 1, 1, 1 }, { 0 } },
+        { { 1, 1, 1, 1 }, { 0 } },
     };
 
     h_triangle_t *result = calloc(2, sizeof(h_triangle_t));
@@ -52,9 +50,9 @@ END_TEST
 START_TEST(clip_triangle_behind_plane)
 {
     h_triangle_t h_triangle = {
-        { -1, -1, -1, 1 },
-        { -1, 1, -1, 1 },
-        { 1, 1, -1, 1 },
+        { { -1, -1, -1, 1 }, { 0 } },
+        { { -1, 1, -1, 1 }, { 0 } },
+        { { 1, 1, -1, 1 }, { 0 } },
     };
 
     vector4_t plane = { 0, 0, 1, 0 };
@@ -70,17 +68,17 @@ END_TEST
 START_TEST(clip_triangle_two_clipped_vertex_case_1)
 {
     h_triangle_t h_triangle = {
-        { -1, -1, 1, 1 },
-        { -1, -1, -1, 1 },
-        { 1, -1, -1, 1 },
+        { { -1, -1, 1, 1 }, { 0 } },
+        { { -1, -1, -1, 1 }, { 0 } },
+        { { 1, -1, -1, 1 }, { 0 } },
     };
 
     vector4_t plane = { 0, 0, 1, 0 };
 
     h_triangle_t ref = {
-        { -1, -1, 1, 1 },
-        { -1, -1, 0, 1 },
-        { 0, -1, 0, 1 },
+        { { -1, -1, 1, 1 }, { 0 } },
+        { { -1, -1, 0, 1 }, { 0 } },
+        { { 0, -1, 0, 1 }, { 0 } },
     };
 
     h_triangle_t *result = calloc(2, sizeof(h_triangle_t));
@@ -96,14 +94,18 @@ END_TEST
 START_TEST(clip_triangle_two_clipped_vertex_case_2)
 {
     h_triangle_t h_triangle = {
-        { -1, -1, -1, 1 },
-        { 1, -1, -1, 1 },
-        { -1, -1, 1, 1 },
+        { { -1, -1, -1, 1 }, { 0 } },
+        { { 1, -1, -1, 1 }, { 0 } },
+        { { -1, -1, 1, 1 }, { 0 } },
     };
 
     vector4_t plane = { 0, 0, 1, 0 };
 
-    h_triangle_t ref = { { -1, -1, 1, 1 }, { -1, -1, 0, 1 }, { 0, -1, 0, 1 } };
+    h_triangle_t ref = {
+        { { -1, -1, 1, 1 }, { 0 } },
+        { { -1, -1, 0, 1 }, { 0 } },
+        { { 0, -1, 0, 1 }, { 0 } },
+    };
 
     h_triangle_t *result = calloc(2, sizeof(h_triangle_t));
 
@@ -118,14 +120,18 @@ END_TEST
 START_TEST(clip_triangle_two_clipped_vertex_case_3)
 {
     h_triangle_t h_triangle = {
-        { 1, -1, -1, 1 },
-        { -1, -1, 1, 1 },
-        { -1, -1, -1, 1 },
+        { { 1, -1, -1, 1 }, { 0 } },
+        { { -1, -1, 1, 1 }, { 0 } },
+        { { -1, -1, -1, 1 }, { 0 } },
     };
 
     vector4_t plane = { 0, 0, 1, 0 };
 
-    h_triangle_t ref = { { -1, -1, 1, 1 }, { -1, -1, 0, 1 }, { 0, -1, 0, 1 } };
+    h_triangle_t ref = {
+        { { -1, -1, 1, 1 }, { 0 } },
+        { { -1, -1, 0, 1 }, { 0 } },
+        { { 0, -1, 0, 1 }, { 0 } },
+    };
 
     h_triangle_t *result = calloc(2, sizeof(h_triangle_t));
 
@@ -140,22 +146,22 @@ END_TEST
 START_TEST(clip_triangle_one_clipped_vertex_case_1)
 {
     h_triangle_t h_triangle = {
-        { -1, -1, 1, 1 },
-        { 1, -1, 1, 1 },
-        { 1, -1, -1, 1 },
+        { { -1, -1, 1, 1 }, { 0 } },
+        { { 1, -1, 1, 1 }, { 0 } },
+        { { 1, -1, -1, 1 }, { 0 } },
     };
 
     vector4_t plane = { 0, 0, 1, 0 };
 
     h_triangle_t ref[2] = { {
-                                { -1, -1, 1, 1 },
-                                { 1, -1, 1, 1 },
-                                { 1, -1, 0, 1 },
+                                { { -1, -1, 1, 1 }, { 0 } },
+                                { { 1, -1, 1, 1 }, { 0 } },
+                                { { 1, -1, 0, 1 }, { 0 } },
                             },
                             {
-                                { -1, -1, 1, 1 },
-                                { 1, -1, 0, 1 },
-                                { 0, -1, 0, 1 },
+                                { { -1, -1, 1, 1 }, { 0 } },
+                                { { 1, -1, 0, 1 }, { 0 } },
+                                { { 0, -1, 0, 1 }, { 0 } },
                             } };
 
     h_triangle_t *result = calloc(2, sizeof(h_triangle_t));
@@ -172,22 +178,22 @@ END_TEST
 START_TEST(clip_triangle_one_clipped_vertex_case_2)
 {
     h_triangle_t h_triangle = {
-        { 1, -1, 1, 1 },
-        { 1, -1, -1, 1 },
-        { -1, -1, 1, 1 },
+        { { 1, -1, 1, 1 }, { 0 } },
+        { { 1, -1, -1, 1 }, { 0 } },
+        { { -1, -1, 1, 1 }, { 0 } },
     };
 
     vector4_t plane = { 0, 0, 1, 0 };
 
     h_triangle_t ref[2] = { {
-                                { -1, -1, 1, 1 },
-                                { 1, -1, 1, 1 },
-                                { 1, -1, 0, 1 },
+                                { { -1, -1, 1, 1 }, { 0 } },
+                                { { 1, -1, 1, 1 }, { 0 } },
+                                { { 1, -1, 0, 1 }, { 0 } },
                             },
                             {
-                                { -1, -1, 1, 1 },
-                                { 1, -1, 0, 1 },
-                                { 0, -1, 0, 1 },
+                                { { -1, -1, 1, 1 }, { 0 } },
+                                { { 1, -1, 0, 1 }, { 0 } },
+                                { { 0, -1, 0, 1 }, { 0 } },
                             } };
 
     h_triangle_t *result = calloc(2, sizeof(h_triangle_t));
@@ -203,23 +209,21 @@ END_TEST
 
 START_TEST(clip_triangle_one_clipped_vertex_case_3)
 {
-    h_triangle_t h_triangle = {
-        { 1, -1, -1, 1 },
-        { -1, -1, 1, 1 },
-        { 1, -1, 1, 1 },
-    };
+    h_triangle_t h_triangle = { { { 1, -1, -1, 1 }, { 0 } },
+                                { { -1, -1, 1, 1 }, { 0 } },
+                                { { 1, -1, 1, 1 }, { 0 } } };
 
     vector4_t plane = { 0, 0, 1, 0 };
 
     h_triangle_t ref[2] = { {
-                                { -1, -1, 1, 1 },
-                                { 1, -1, 1, 1 },
-                                { 1, -1, 0, 1 },
+                                { { -1, -1, 1, 1 }, { 0 } },
+                                { { 1, -1, 1, 1 }, { 0 } },
+                                { { 1, -1, 0, 1 }, { 0 } },
                             },
                             {
-                                { -1, -1, 1, 1 },
-                                { 1, -1, 0, 1 },
-                                { 0, -1, 0, 1 },
+                                { { -1, -1, 1, 1 }, { 0 } },
+                                { { 1, -1, 0, 1 }, { 0 } },
+                                { { 0, -1, 0, 1 }, { 0 } },
                             } };
 
     h_triangle_t *result = calloc(2, sizeof(h_triangle_t));
