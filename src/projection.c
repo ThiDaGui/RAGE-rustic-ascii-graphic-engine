@@ -78,23 +78,26 @@ void screen_mapping_shader(h_triangle_t clipped_h_triangle, camera_t *camera,
     }
 }
 
-void pixel_shader(triangle_t clipped_triangle, size_t pixel[2],
-                  vector3_t *light, camera_t *camera, int *image,
-                  float *z_buffer)
+void pixel_shader(triangle_t clipped_triangle, const float ws[3],
+                  const size_t pixel_position[2], vector3_t *light,
+                  camera_t *camera, int *image, float *z_buffer)
 {
-    vector3_t p = { pixel[0] + 0.5f, pixel[1] + 0.5f, camera->z_near };
+    vector3_t p = { pixel_position[0] + 0.5f, pixel_position[1] + 0.5f,
+                    camera->z_near };
 
     float area = edgeFunction(&clipped_triangle[0].position,
                               &clipped_triangle[1].position,
                               &clipped_triangle[2].position);
+    float lambdas[3] = {
+        edgeFunction(&clipped_triangle[1].position,
+                     &clipped_triangle[2].position, &p),
+        edgeFunction(&clipped_triangle[2].position,
+                     &clipped_triangle[0].position, &p),
+        edgeFunction(&clipped_triangle[0].position,
+                     &clipped_triangle[1].position, &p),
+    };
 
-    float w1 = edgeFunction(&clipped_triangle[1].position,
-                            &clipped_triangle[2].position, &p);
-    float w2 = edgeFunction(&clipped_triangle[2].position,
-                            &clipped_triangle[0].position, &p);
-    float w3 = edgeFunction(&clipped_triangle[0].position,
-                            &clipped_triangle[1].position, &p);
-    if (((w1 == 0
+    if (((lambdas[0] == 0
           && (((clipped_triangle[2].position.y - clipped_triangle[1].position.y)
                    == 0
                && (clipped_triangle[2].position.x
@@ -103,8 +106,8 @@ void pixel_shader(triangle_t clipped_triangle, size_t pixel[2],
               || (clipped_triangle[2].position.y
                   - clipped_triangle[1].position.y)
                   > 0))
-         || w1 > 0)
-        && ((w2 == 0
+         || lambdas[0] > 0)
+        && ((lambdas[1] == 0
              && (((clipped_triangle[0].position.y
                    - clipped_triangle[2].position.y)
                       == 0
@@ -114,8 +117,8 @@ void pixel_shader(triangle_t clipped_triangle, size_t pixel[2],
                  || (clipped_triangle[0].position.y
                      - clipped_triangle[2].position.y)
                      > 0))
-            || w2 > 0)
-        && ((w3 == 0
+            || lambdas[1] > 0)
+        && ((lambdas[2] == 0
              && (((clipped_triangle[1].position.y
                    - clipped_triangle[0].position.y)
                       == 0
@@ -125,33 +128,32 @@ void pixel_shader(triangle_t clipped_triangle, size_t pixel[2],
                  || (clipped_triangle[1].position.y
                      - clipped_triangle[0].position.y)
                      > 0))
-            || w3 > 0))
+            || lambdas[2] > 0))
     {
-        w1 /= area;
-        w2 /= area;
-        w3 /= area;
-        float z = (w1 * (clipped_triangle[0].position.z))
-            + (w2 * (clipped_triangle[1].position.z))
-            + (w3 * (clipped_triangle[2].position.z));
+        lambdas[0] /= area;
+        lambdas[1] /= area;
+        lambdas[2] /= area;
+        float z = (lambdas[0] * (clipped_triangle[0].position.z))
+            + (lambdas[1] * (clipped_triangle[1].position.z))
+            + (lambdas[2] * (clipped_triangle[2].position.z));
 
-        vector3_t normale = VECTOR3_INIT;
+        vector3_t normal = VECTOR3_INIT;
 
-        vector3_pc_BLERP(
-            &clipped_triangle[0].normale, clipped_triangle[0].position.z, w1,
-            &clipped_triangle[1].normale, clipped_triangle[1].position.z, w2,
-            &clipped_triangle[2].normale, clipped_triangle[2].position.z, w3, z,
-            &normale);
+        vector3_pc_BLERP(&clipped_triangle[0].normale, ws[0], lambdas[0],
+                         &clipped_triangle[1].normale, ws[1], lambdas[1],
+                         &clipped_triangle[2].normale, ws[2], lambdas[2], &normal);
 
-        float colorf;
-        v_dot_v(light, &normale, &colorf);
-        colorf = min(colorf, 255);
-        colorf = max(1, colorf);
-        int color = colorf;
+        float f_color;
+        v_dot_v(light, &normal, &f_color);
+        f_color = min(f_color, 255);
+        f_color = max(1, f_color);
+        int color = f_color;
 
-        if (z < z_buffer[pixel[1] * camera->width + pixel[0]])
+        if (z < z_buffer[pixel_position[1] * camera->width + pixel_position[0]])
         {
-            z_buffer[pixel[1] * camera->width + pixel[0]] = z;
-            image[pixel[1] * camera->width + pixel[0]] = color;
+            z_buffer[pixel_position[1] * camera->width + pixel_position[0]] = z;
+            image[pixel_position[1] * camera->width + pixel_position[0]] =
+                color;
         }
     }
 }
@@ -295,6 +297,11 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
 
             // Proto coloration
             float color;
+            float ws[3] = {
+                clipped_h_triangles[iter][0].position.w,
+                clipped_h_triangles[iter][1].position.w,
+                clipped_h_triangles[iter][2].position.w,
+            };
 
             v_dot_v(light, &v_normal, &color);
             color = min(color, 255);
@@ -329,7 +336,7 @@ int projection(obj_t *object, camera_t *camera, vector3_t *light, int *image)
                     p[0] = x;
                     p[1] = y;
 
-                    pixel_shader(clipped_triangle, p, light, camera, image,
+                    pixel_shader(clipped_triangle, ws, p, light, camera, image,
                                  z_buffer);
                 }
             }

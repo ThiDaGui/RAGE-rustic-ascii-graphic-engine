@@ -43,9 +43,12 @@ void vector3_LERP(vector3_t *vector3_a, vector3_t *vector3_b, float lambda,
 
 void vector3_pc_BLERP(vector3_t *vector3_a, float z_a, float lambda_a,
                       vector3_t *vector3_b, float z_b, float lambda_b,
-                      vector3_t *vector3_c, float z_c, float lambda_c, float z,
+                      vector3_t *vector3_c, float z_c, float lambda_c,
                       vector3_t *result)
 {
+    float one_over_z = lambda_a * 1.0f/z_a + lambda_b * 1.0f / z_b + lambda_c * 1.0f / z_c;
+    float z = 1.0f/one_over_z;
+
     result->x = z
         * (lambda_a * vector3_a->x / z_a + lambda_b * vector3_b->x / z_b
            + lambda_c * vector3_c->x / z_c);
