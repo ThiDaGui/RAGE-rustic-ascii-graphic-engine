@@ -1,20 +1,24 @@
 #include <argp.h>
+#include <curses.h>
 #include <err.h>
 #include <math.h>
 #include <ncurses.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "camera.h"
+#include "includes/camera.h"
 #include "obj.h"
 #include "parser.h"
 #include "projection.h"
 #include "win.h"
 
+typedef void render_style_t(WINDOW *, const int[], size_t, size_t, int, int);
+render_style_t style_ascii;
+render_style_t style_pixel_gray;
+
 float rect_avg(const int img[], size_t width, size_t height, size_t startX,
                size_t startY, size_t rect_width, size_t rect_height);
-
-void image2ascii(WINDOW *win, const int img[], size_t width, size_t height,
-                 int char_width, int char_height);
 
 void init_camera(camera_t *cam, float fov, size_t width, size_t height,
                  vector3_t *pos, vector3_t *uz);
@@ -29,6 +33,7 @@ void clear_image_buffer(int image[], size_t len);
 /* Argparser */
 #define ARGP_FOV_KEY 800
 #define ARGP_ROTR_KEY 'r'
+#define ARGP_STYLE_KEY 's'
 
 /* Initial configuration */
 #define DEFAULT_FOV 30.0 // Default value of the fov
@@ -60,6 +65,7 @@ typedef struct args_s
 {
     char *filename;
     float fov;
+    render_style_t *style;
 } args_t;
 
 /* Program documentation */
@@ -70,12 +76,16 @@ static char args_doc[] = "FILE";
 
 static struct argp_option options[] = {
     { "fov", ARGP_FOV_KEY, "fov", 0, "Field of view of the camera in deg", 0 },
+    { "style", ARGP_STYLE_KEY, "style", 0,
+      "display render style. Current options are:\n- acsii: render the scene "
+      "using ascii characters as pixels",
+      0 },
     { 0 },
 };
 
 int parse_opt(int key, char *arg, struct argp_state *state)
 {
-    args_t *args = (args_t *)state->input;
+    args_t *args = state->input;
 
     switch (key)
     {
@@ -95,6 +105,14 @@ int parse_opt(int key, char *arg, struct argp_state *state)
             argp_error(state, "field of view cannot be negative");
 
         args->fov = val;
+        break;
+
+    case ARGP_STYLE_KEY:
+        if (strcmp(arg, "ascii") == 0)
+            args->style = style_ascii;
+
+        else
+            argp_error(state, "\"%s\" style unknown", arg);
         break;
 
     case ARGP_KEY_ARG:
@@ -122,7 +140,7 @@ static struct argp argp = {
 
 int main(int argc, char *argv[])
 {
-    args_t args = { NULL, DEFAULT_FOV };
+    args_t args = { NULL, DEFAULT_FOV, style_ascii };
     argp_parse(&argp, argc, argv, 0, 0, &args);
 
     /* Try load model */
@@ -261,7 +279,7 @@ float rect_avg(const int img[], size_t width, size_t height, size_t startX,
     return sum / count;
 }
 
-void image2ascii(WINDOW *win, const int img[], size_t width, size_t height,
+void style_ascii(WINDOW *win, const int img[], size_t width, size_t height,
                  int char_width, int char_height)
 {
     float val;
@@ -302,7 +320,7 @@ void redraw(WINDOW *win, camera_t *camera, vector3_t *light, obj_t *obj,
     projection(obj, camera, light, image); // Update image
 
     wclear(win);
-    image2ascii(win, image, camera->width, camera->height, CHAR_WIDTH,
+    style_ascii(win, image, camera->width, camera->height, CHAR_WIDTH,
                 CHAR_HEIGHT);
 }
 
