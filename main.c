@@ -27,7 +27,6 @@ void redraw(WINDOW *win, camera_t *camera, vector3_t *light, obj_t *obj,
 void clear_image_buffer(int image[], size_t len);
 
 /* Argparser */
-#define ARGP_FILENAME_KEY 'f'
 #define ARGP_FOV_KEY 800
 #define ARGP_ROTR_KEY 'r'
 
@@ -67,12 +66,10 @@ typedef struct args_s
 static char doc[] = "Convert an input .obj model into ASCII art.";
 
 /* Usage documentation */
-static char args_doc[] = "";
+static char args_doc[] = "FILE";
 
 static struct argp_option options[] = {
-    { "filename", ARGP_FILENAME_KEY, "FILE", 0, "Image to transform into ASCII",
-      0 },
-    { "fov", ARGP_FOV_KEY, "float", 0, "Field of view of the camera", 0 },
+    { "fov", ARGP_FOV_KEY, "fov", 0, "Field of view of the camera in deg", 0 },
     { 0 },
 };
 
@@ -82,9 +79,6 @@ int parse_opt(int key, char *arg, struct argp_state *state)
 
     switch (key)
     {
-    case ARGP_FILENAME_KEY:
-        args->filename = arg;
-        break;
     case ARGP_FOV_KEY:
         errno = 0;
 
@@ -102,6 +96,14 @@ int parse_opt(int key, char *arg, struct argp_state *state)
 
         args->fov = val;
         break;
+
+    case ARGP_KEY_ARG:
+        if (state->arg_num >= 1)
+            argp_usage(state);
+
+        args->filename = arg;
+        break;
+
     case ARGP_KEY_END:
         /* Arguments validation */
         if (args->filename == NULL)
@@ -114,7 +116,9 @@ int parse_opt(int key, char *arg, struct argp_state *state)
     return 0;
 }
 
-static struct argp argp = { options, parse_opt, args_doc, doc, 0, 0, 0 };
+static struct argp argp = {
+    options, parse_opt, args_doc, doc, NULL, NULL, NULL
+};
 
 int main(int argc, char *argv[])
 {
