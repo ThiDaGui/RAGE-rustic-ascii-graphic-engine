@@ -11,7 +11,7 @@
  * @param position the position of the vertex 
  * @param normale the normal direction at the vertex surface
  */
-typedef struct
+typedef struct vertex_t
 {
     vector3_t position;
     vector3_t normale;
@@ -25,7 +25,7 @@ typedef struct
  * @param position the position of the vertex 
  * @param normale the normal direction at the vertex surface
  */
-typedef struct
+typedef struct h_vertex_t
 {
     vector4_t position;
     vector3_t normale;
@@ -39,7 +39,6 @@ vertex_t *vertex_init(void);
 
 h_vertex_t *h_vertex_init(void);
 /**
- * @fn void vertex_free(vertex_t *vertex)
  * @brief free the vertex_t struct passed as argument
  * 
  * @param vertex the `vertex_t` to free

@@ -1,3 +1,12 @@
+/**
+ * @file api.c
+ * @brief source file of the api module
+ * @version 0.1
+ * @date 2023-06-16
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "api.h"
 
 #include <stdint.h>
@@ -8,16 +17,16 @@
 #include "vector3.h"
 #include "vector4.h"
 
-vector3_t *vector3_dot_t_matrix(vector3_t *b, t_matrix_t *a, vector3_t *result)
+vector3_t *vector3_dot_t_matrix(vector3_t *v, t_matrix_t *M, vector3_t *result)
 {
-    result->x = (((a->data[0]) * b->x) + ((a->data[4]) * b->y)
-                 + ((a->data[8]) * b->z) + ((a->data[12])));
-    result->y = (((a->data[1]) * b->x) + ((a->data[5]) * b->y)
-                 + ((a->data[9]) * b->z) + ((a->data[13])));
-    result->z = (((a->data[2]) * b->x) + ((a->data[6]) * b->y)
-                 + ((a->data[10]) * b->z) + ((a->data[14])));
-    float tmp = (((a->data[3]) * b->x) + ((a->data[7]) * b->y)
-                 + ((a->data[11]) * b->z) + ((a->data[15])));
+    result->x = (((M->data[0]) * v->x) + ((M->data[4]) * v->y)
+                 + ((M->data[8]) * v->z) + ((M->data[12])));
+    result->y = (((M->data[1]) * v->x) + ((M->data[5]) * v->y)
+                 + ((M->data[9]) * v->z) + ((M->data[13])));
+    result->z = (((M->data[2]) * v->x) + ((M->data[6]) * v->y)
+                 + ((M->data[10]) * v->z) + ((M->data[14])));
+    float tmp = (((M->data[3]) * v->x) + ((M->data[7]) * v->y)
+                 + ((M->data[11]) * v->z) + ((M->data[15])));
     if (tmp != 1)
     {
         result->x = result->x / tmp;
