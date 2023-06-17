@@ -184,5 +184,5 @@ build/
 !/models/
 !/models/*.obj
 
-## Doxygen
+### Doxygen output ###
 doc/
