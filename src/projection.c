@@ -1,3 +1,10 @@
+/**
+ * @file projection.c
+ * @brief source file of the projection module
+ * @details contain many function who are not exposed and used only here
+ * @version 0.1
+ * @date 2023-06-17
+ */
 #include "projection.h"
 
 #include <err.h>

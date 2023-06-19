@@ -1,3 +1,9 @@
+/**
+ * @file projection.h
+ * @brief header file of the projection module
+ * @version 0.1
+ * @date 2023-06-19
+ */
 #ifndef PROJECTION_H
 #define PROJECTION_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file rasterizer.c
+ * @brief source file of the rasterizer module
+ * @version 0.1
+ * @date 2023-06-17
+ */
 #include "rasterizer.h"
 
 #include <math.h>

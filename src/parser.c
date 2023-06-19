@@ -1,3 +1,11 @@
+/**
+ * @file parser.c
+ * @brief source file of the parser module
+ * @version 0.1
+ * @date 2023-06-19
+ * 
+ * 
+ */
 #include "parser.h"
 
 #include <errno.h>

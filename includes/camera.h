@@ -1,11 +1,9 @@
 /**
  * @file camera.h
- * @author your name (you@domain.com)
  * @brief camera header file. 
  * contains the camera struct and the functions to manipulate it.
  * @version 0.1
  * @date 2023-06-16
- * 
  * @copyright Copyright (c) 2023
  * 
  */
@@ -33,12 +31,35 @@
 /**
  * @struct camera_t
  * @brief camera_t is a struct that contains the data of a camera
- * Initialize the camera with the camera_init function and free it with the camera_free function
- *
+ * @details Initialize the camera with the camera_init function and free it with the camera_free function
+ * @var camera_t::position
+ * The position of the camera
+ * @var camera_t::look_at
+ * The point the camera is looking at
+ * @var camera_t::fov
+ * The field of view of the camera
+ * @var camera_t::tan_fov
+ * The tangent of the field of view of the camera
+ * @var camera_t::height
+ * The height of the camera in pixels
+ * @var camera_t::width
+ * The width of the camera in pixels
+ * @var camera_t::aspect_ratio
+ * The aspect ratio of the camera
+ * @var camera_t::z_near
+ * The near clipping plane of the camera
+ * @var camera_t::z_far
+ * The far clipping plane of the camera
+ * @var camera_t::world_to_view
+ * The world to view matrix of the camera
+ * @var camera_t::view_to_clip
+ * The view to clip matrix of the camera
+ * @var camera_t::projection
+ * The projection matrix of the camera
  */
 typedef struct camera_t
 {
-    vector3_t *position; /**The position of the camera */
+    vector3_t *position; /** The position of the camera */
     vector3_t *look_at; /** The point the camera is looking at */
     float fov; /** The field of view of the camera */
     float tan_fov; /** The tangent of the field of view of the camera */

@@ -1,3 +1,9 @@
+/**
+ * @file triangle.c
+ * @brief Triangle type and functions
+ * @version 0.1
+ * @date 2023-06-19
+ */
 #include "triangle.h"
 
 #include <stdlib.h>

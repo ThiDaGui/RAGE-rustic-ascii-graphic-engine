@@ -1,3 +1,13 @@
+/**
+ * @file parser.h
+ * @brief parser header file.
+ * @details this module is used to parse a Wavefront .obj file.
+ * @see https://en.wikipedia.org/wiki/Wavefront_.obj_file
+ * @version 0.1
+ * @date 2023-06-19
+ * 
+ * 
+ */
 #ifndef PARSER_H
 #define PARSER_H
 

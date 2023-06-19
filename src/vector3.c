@@ -1,14 +1,22 @@
+/**
+ * @file vector3.c
+ * @brief source file for vector3 type and functions
+ * @version 0.1
+ * @date 2023-06-19
+ * 
+ * 
+ */
 #include "vector3.h"
 
 #include <stdlib.h>
 
 const vector3_t VECTOR3_INIT = { 0 };
 
-void vector3_set(vector3_t *v, float x, float y, float z)
+void vector3_set(vector3_t *vector3, float x, float y, float z)
 {
-    v->x = x;
-    v->y = y;
-    v->z = z;
+    vector3->x = x;
+    vector3->y = y;
+    vector3->z = z;
 }
 
 vector3_t *vector3_init(void)

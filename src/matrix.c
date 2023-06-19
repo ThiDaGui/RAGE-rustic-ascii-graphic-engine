@@ -1,6 +1,9 @@
-//
-// Created by damiendidier on 21/03/2021.
-//
+/**
+ * @file matrix.c
+ * @brief source file for the matrix module
+ * @version 0.1
+ * @date 2023-06-17
+ */
 #include "matrix.h"
 
 #include <stdlib.h>

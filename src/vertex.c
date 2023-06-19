@@ -1,3 +1,11 @@
+/**
+ * @file vertex.c
+ * @brief implementation of vertex.h
+ * @version 0.1
+ * @date 2023-06-19
+ * 
+ * 
+ */
 #include "vertex.h"
 
 #include <stdlib.h>
