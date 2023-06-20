@@ -32,6 +32,27 @@ target_link_libraries(rage_app
 		${CURSES_LIBRARIES}
 		m
 )
+# Create documentation
+option(BUILD_DOC "Build documentation" OFF)
 
-include(CTest)
-add_subdirectory(tests)
+if(BUILD_DOC)
+	# check if Doxygen is installed
+	find_package(Doxygen REQUIRED dot)
+	if (DOXYGEN_FOUND)
+		# use the Doxyfile file to generate the documentation
+		add_custom_target(doc
+			COMMAND Doxygen::doxygen Doxyfile
+			WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+			COMMENT "Generating API documentation with Doxygen"
+			VERBATIM
+		)
+	else (DOXYGEN_FOUND)
+	  message("Doxygen need to be installed to generate the doxygen documentation")
+	endif (DOXYGEN_FOUND)
+endif(BUILD_DOC)
+
+option(BUILD_TEST"Build tests" OFF)
+if (BUILD_TEST)
+	include(CTest)
+	add_subdirectory(tests)
+endif(BUILD_TEST)
