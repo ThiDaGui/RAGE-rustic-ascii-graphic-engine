@@ -15,6 +15,7 @@ To compile and run RAGE, you will need:
 * A C99 compiler.
 * The CMake build system.
 * The nCurses library.
+* (optional) Doxygen to generate the documentation.
 
 ### Compile
 
@@ -29,12 +30,24 @@ cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug
 ```sh
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
 ```
+#### Optional
+##### Doxygen
+add the flag `-DBUILD_DOC=ON` to the cmake command
+##### TEST
+add the flag `-DBUILD_TEST=ON` to the cmake command
 
 After this you need to compile project as follows:
 
 ```sh
 cmake --build build/
 ```
+if you build with doxygen and/or the tests, you can run them with the following commands:
+```sh
+cd build/
+make doc # to generate the documentation. 
+make test # to run the tests
+```
+The documentation will be in `./doc/html/`.Open the `./doc/html/index.html` file in your browser
 
 That's it! If everything went right, you should see a lot of text, and RAGE should be compiled and ready to be executed!
 
@@ -43,7 +56,7 @@ That's it! If everything went right, you should see a lot of text, and RAGE shou
 After compilation, execute the generated `rage_app` (in `build/`) file with the .obj file you desire to visualize.
 
 ```sh
-./build/rage_app -f models/suzanne.obj
+./build/rage_app  models/suzanne.obj
 ```
 
 Usage `--usage`:
