@@ -183,3 +183,6 @@ build/
 ### Models .obj ###
 !/models/
 !/models/*.obj
+
+## Doxygen
+doc/
