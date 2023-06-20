@@ -155,7 +155,7 @@ void pixel_shader(triangle_t clipped_triangle, const float ws[3],
         v_dot_v(light, &normal, &f_color);
         f_color = min(f_color, 255);
         f_color = max(1, f_color);
-        int color = f_color;
+        int color = roundf(f_color);
 
         if (z < z_buffer[pixel_position[1] * camera->width + pixel_position[0]])
         {
