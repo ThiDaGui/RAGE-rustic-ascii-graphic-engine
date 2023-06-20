@@ -3,8 +3,8 @@
  * @brief vertex_t and h_vertex_t definition and functions
  * @version 0.1
  * @date 2023-06-19
- * 
- * 
+ *
+ *
  */
 #ifndef VERTEX_H
 #define VERTEX_H
@@ -28,7 +28,8 @@ typedef struct vertex_t
 /**
  * @struct h_vertex_t
  * @brief same as a `vertex_t` but for Homogeneous coordinates
- * @details here the position is a vector4_t because it is in Homogeneous coordinates
+ * @details here the position is a vector4_t because it is in Homogeneous
+ * coordinates
  * @var h_vertex_t::position
  * the position of the vertex
  * @var h_vertex_t::normale
@@ -71,16 +72,17 @@ void h_vertex_free(h_vertex_t *h_vertex);
 /**
  * @brief UNDECLARED FUNCTION. DO NOT USE
  * @details linear interpolation for vertex_t
- * @param vertex_a 
- * @param vertex_b 
- * @param lambda 
- * @param result 
+ * @param vertex_a
+ * @param vertex_b
+ * @param lambda
+ * @param result
  */
 void vertex_LERP(vertex_t *vertex_a, vertex_t *vertex_b, float lambda,
                  vertex_t *result);
 /**
  * @brief perform a linear interpolation for h_vertex_t
- * @details use the vector4_LERP on the position and then vector3_LERP on the normal and store the result in result
+ * @details use the vector4_LERP on the position and then vector3_LERP on the
+ * normal and store the result in result
  * @param h_vertex_a first h_vertex_t
  * @param h_vertex_b second h_vertex_t
  * @param lambda the lambda for the linear interpolation
@@ -91,12 +93,12 @@ void h_vertex_LERP(h_vertex_t *h_vertex_a, h_vertex_t *h_vertex_b, float lambda,
 /**
  * @brief UNDECLARED FUNCTION. DO NOT USE
  * @details depth correct linear interpolation for vertex_t
- * @param vertex_a 
- * @param depth_a 
- * @param vertex_b 
- * @param depth_b 
- * @param lambda 
- * @param result 
+ * @param vertex_a
+ * @param depth_a
+ * @param vertex_b
+ * @param depth_b
+ * @param lambda
+ * @param result
  */
 void vertex_depth_correct_LERP(vertex_t *vertex_a, float depth_a,
                                vertex_t *vertex_b, float depth_b, float lambda,
@@ -104,12 +106,12 @@ void vertex_depth_correct_LERP(vertex_t *vertex_a, float depth_a,
 /**
  * @brief UNDECLARED FUNCTION. DO NOT USE
  * @details depth correct linear interpolation for h_vertex_t
- * @param h_vertex_a 
- * @param depth_a 
- * @param h_vertex_b 
- * @param depth_b 
- * @param lambda 
- * @param result 
+ * @param h_vertex_a
+ * @param depth_a
+ * @param h_vertex_b
+ * @param depth_b
+ * @param lambda
+ * @param result
  */
 void h_vertex_depth_correct_LERP(h_vertex_t *h_vertex_a, float depth_a,
                                  h_vertex_t *h_vertex_b, float depth_b,

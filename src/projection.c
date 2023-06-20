@@ -148,7 +148,8 @@ void pixel_shader(triangle_t clipped_triangle, const float ws[3],
 
         vector3_pc_BLERP(&clipped_triangle[0].normale, ws[0], lambdas[0],
                          &clipped_triangle[1].normale, ws[1], lambdas[1],
-                         &clipped_triangle[2].normale, ws[2], lambdas[2], &normal);
+                         &clipped_triangle[2].normale, ws[2], lambdas[2],
+                         &normal);
 
         float f_color;
         v_dot_v(light, &normal, &f_color);

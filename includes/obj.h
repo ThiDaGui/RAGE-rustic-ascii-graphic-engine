@@ -1,7 +1,8 @@
 /**
  * @file obj.h
  * @brief header file of the obj module.
- * @details this module is used to represent a 3D object and store its vertices, texture coordinates, normals and faces.
+ * @details this module is used to represent a 3D object and store its vertices,
+ * texture coordinates, normals and faces.
  * @see https://en.wikipedia.org/wiki/Wavefront_.obj_file
  * @version 0.1
  * @date 2023-06-17
@@ -13,7 +14,6 @@
 
 #include "vector3.h"
 
-
 #define OBJ_TRUE (1)
 #define OBJ_FALSE (0)
 
@@ -21,13 +21,13 @@
 #define OBJ_ERROR (-1)
 #define OBJ_ERROR_NULL (-2)
 
-
 /**
  * @struct face_t
  * @brief the implementation of a face from the wavefront .obj file format.
- * @details a face is a collection of vertices, texture coordinates and normals. TLDR its a triangle.
+ * @details a face is a collection of vertices, texture coordinates and normals.
+ * TLDR its a triangle.
  * @see https://en.wikipedia.org/wiki/Wavefront_.obj_file#Face_elements
- * @var face_t::v_indices 
+ * @var face_t::v_indices
  * The indices of the geometric vertices.
  * @var face_t::vt_indices
  * The indices of the texture vertices.
@@ -45,8 +45,10 @@ typedef struct face_t
 
 /**
  * @struct obj_t
- * @brief struct used to represent a 3D object from the wavefront .obj file format.
- * @details an object is a collection of vertices, texture coordinates, normals and faces.
+ * @brief struct used to represent a 3D object from the wavefront .obj file
+ * format.
+ * @details an object is a collection of vertices, texture coordinates, normals
+ * and faces.
  * @see https://en.wikipedia.org/wiki/Wavefront_.obj_file#File_format
  * @var obj_t::vertices
  * The geometric vertices.
@@ -80,7 +82,8 @@ typedef struct obj_t
 
 /**
  * Allocate and initializes a `face_t`.
- * @details the `face_t` is initialized with all its pointers set to NULL and its vertex count set to 0.
+ * @details the `face_t` is initialized with all its pointers set to NULL and
+ * its vertex count set to 0.
  * @see face_free()
  * @see face_add_vertex()
  * @see obj_add_face()
@@ -108,7 +111,8 @@ int face_add_vertex(face_t *face, size_t v, size_t vt, size_t vn);
 
 /**
  * Allocate and initializes a `obj_t`.
- * @details The `obj_t` is initialized with 0 vertices, 0 texture coordinates, 0 normals and 0 faces. all the pointers are initialized to NULL.
+ * @details The `obj_t` is initialized with 0 vertices, 0 texture coordinates, 0
+ * normals and 0 faces. all the pointers are initialized to NULL.
  * @see obj_free()
  * @see obj_add_vertex()
  * @see obj_add_texture_coordinate()
@@ -117,7 +121,7 @@ int face_add_vertex(face_t *face, size_t v, size_t vt, size_t vn);
  * @see obj_is_valid()
  * @retval NULL if the allocation failed
  * @return The initialized `obj_t`.
- * 
+ *
  */
 obj_t *obj_init(void);
 
@@ -130,12 +134,13 @@ void obj_free(obj_t *obj);
 
 /**
  * Verify if an `obj_t` is valid.
- * @details An `obj_t` is invalid if any of its faces has a vertex index greater than the number of vertices, texture coordinates or normals.
+ * @details An `obj_t` is invalid if any of its faces has a vertex index greater
+ * than the number of vertices, texture coordinates or normals.
  * @param obj The `obj_t` to verify if is valid.
  * @retval OBJ_TRUE if the `obj_t` is valid
  * @retval OBJ_FALSE if the `obj_t` is not valid
  * @retval OBJ_ERROR_NULL if the `obj_t` is NULL
- * 
+ *
  */
 int obj_is_valid(obj_t *obj);
 
@@ -155,9 +160,10 @@ int obj_add_vertex(obj_t *obj, vector3_t *v);
  * Add a texture coordinate vertex to an `obj_t`.
  * @param obj The `obj_t` to which to add the vertex.
  * @param vt The texture coordinate vertex to be added.
- * @see vector3_t 
+ * @see vector3_t
  * @retval OBJ_SUCCESS if the operation was successful
- * @retval OBJ_ERROR if the `obj_t` or the `vector3_t` are NULL or if the allocation failed
+ * @retval OBJ_ERROR if the `obj_t` or the `vector3_t` are NULL or if the
+ * allocation failed
  * @return 0 if the operation was successful, a negative value otherwise.
  */
 int obj_add_texture_coordinate(obj_t *obj, vector3_t *vt);
@@ -168,7 +174,8 @@ int obj_add_texture_coordinate(obj_t *obj, vector3_t *vt);
  * @param vn The normal vertex to be added.
  * @see vector3_t
  * @retval OBJ_SUCCESS if the operation was successful
- * @retval OBJ_ERROR if the `obj_t` or the `vector3_t` are NULL or if the allocation failed
+ * @retval OBJ_ERROR if the `obj_t` or the `vector3_t` are NULL or if the
+ * allocation failed
  * @return 0 if the operation was successful, a negative value otherwise.
  */
 int obj_add_normal(obj_t *obj, vector3_t *vn);
@@ -178,7 +185,8 @@ int obj_add_normal(obj_t *obj, vector3_t *vn);
  * @param obj The `obj_t` to which to add the face.
  * @param face The `face_t` to be added.
  * @retval OBJ_SUCCESS if the operation was successful
- * @retval OBJ_ERROR if the `obj_t` or the `face_t` are NULL or if the allocation failed
+ * @retval OBJ_ERROR if the `obj_t` or the `face_t` are NULL or if the
+ * allocation failed
  * @return 0 if the operation was successful, a negative value otherwise.
  */
 int obj_add_face(obj_t *obj, face_t *face);

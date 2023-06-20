@@ -3,8 +3,8 @@
  * @brief source file of vector4 module
  * @version 0.1
  * @date 2023-06-19
- * 
- * 
+ *
+ *
  */
 #include "vector4.h"
 
@@ -97,7 +97,7 @@ void vector4_LERP(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
 }
 
 void vector4_dot_vector4(vector4_t *vector4_a, vector4_t *vector4_b,
-                        float *result)
+                         float *result)
 {
     *result = (vector4_a->x * vector4_b->x + vector4_a->y * vector4_b->y
                + vector4_a->z * vector4_b->z + vector4_a->w * vector4_b->w);

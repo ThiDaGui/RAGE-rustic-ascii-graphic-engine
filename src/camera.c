@@ -3,9 +3,9 @@
  * @brief source file of the camera module
  * @version 0.1
  * @date 2023-06-16
- * 
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 #include "camera.h"
 

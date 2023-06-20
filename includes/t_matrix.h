@@ -1,7 +1,8 @@
 /**
  * @file t_matrix.h
  * @brief header file of the t_matrix module
- * @details 4x4 matrix for 3D transformations and projections, use float and are row-major
+ * @details 4x4 matrix for 3D transformations and projections, use float and are
+ * row-major
  * @version 0.1
  * @date 2023-06-19
  */
@@ -34,7 +35,8 @@ typedef struct t_matrix_t
 int t_matrix_init(t_matrix_t *t_matrix);
 
 /**
- * @brief set the t_matrix_t t_matrix passed as parameter with the data passed as parameter using memcpy
+ * @brief set the t_matrix_t t_matrix passed as parameter with the data passed
+ * as parameter using memcpy
  * @param t_matrix the t_matrix_t to set
  * @param src the data to set the t_matrix_t with
  * @return the t_matrix_t t_matrix passed as parameter
@@ -43,7 +45,8 @@ t_matrix_t *t_matrix_set(t_matrix_t *t_matrix,
                          float src[T_MATRIX_SIZE * T_MATRIX_SIZE]);
 
 /**
- * @brief dot product between two t_matrix_t matrix_a and matrix_b, result is stored in the t_matrix_t result
+ * @brief dot product between two t_matrix_t matrix_a and matrix_b, result is
+ * stored in the t_matrix_t result
  * @param matrix_a the first t_matrix_t
  * @param matrix_b the second t_matrix_t
  * @param result the t_matrix_t to store the result

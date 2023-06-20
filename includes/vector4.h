@@ -3,8 +3,8 @@
  * @brief header file of the vector4 module
  * @version 0.1
  * @date 2023-06-19
- * 
- * 
+ *
+ *
  */
 #ifndef VECTOR4_H
 #define VECTOR4_H
@@ -25,7 +25,7 @@
  */
 typedef struct vector4_t
 {
-    float x; 
+    float x;
     float y;
     float z;
     float w;
@@ -68,7 +68,8 @@ void vector4_free(vector4_t *vector4);
 void vector4_set(vector4_t *vector4, float x, float y, float z, float w);
 
 /**
- * @brief Create a homogenous `vector4_t` from a `vector3_t` and store it in result.
+ * @brief Create a homogenous `vector4_t` from a `vector3_t` and store it in
+ * result.
  * @param vector3 `vector3_t` to convert
  * @param result `vector4_t` to store the result
  * @return result
@@ -84,17 +85,19 @@ vector4_t *vector4_from_vector3(vector3_t *vector3, vector4_t *result);
 vector3_t *vector3_from_vector4(vector4_t *vector4, vector3_t *result);
 
 /**
- * @brief normalize the vector4_t passed as argument and return it as an homogenous vector4_t
+ * @brief normalize the vector4_t passed as argument and return it as an
+ * homogenous vector4_t
  * @param vector4 `vector4_t` to normalize
  * @return vector4_t
- * 
+ *
  */
 vector4_t *vector4_normalize(vector4_t *vector4);
 
 /* =================== Operations ============================= */
 
 /**
- * @brief perform a linear combination of the two vector4_t passed as argument and store the result in the third vector4_t
+ * @brief perform a linear combination of the two vector4_t passed as argument
+ * and store the result in the third vector4_t
  * @param vector4_a the first vector4_t
  * @param vector4_b the second vector4_t
  * @param lambda the coefficient of the linear combination
@@ -103,7 +106,8 @@ vector4_t *vector4_normalize(vector4_t *vector4);
 void vector4_linear(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
                     vector4_t *vector4_result);
 /**
- * @brief perform a linear interpolation of the two vector4_t passed as argument and store the result in the third vector4_t
+ * @brief perform a linear interpolation of the two vector4_t passed as argument
+ * and store the result in the third vector4_t
  * @param vector4_a the first vector4_t
  * @param vector4_b the second vector4_t
  * @param lambda the coefficient of the linear interpolation
@@ -113,7 +117,7 @@ void vector4_LERP(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
                   vector4_t *vector4_result);
 
 /**
- * 
+ *
  * @brief UNDECLARED FUNCTION. DO NOT USE
  * @details  multiply a vector4_t by a real
  * @param[in] lambda float
@@ -122,24 +126,25 @@ void vector4_LERP(vector4_t *vector4_a, vector4_t *vector4_b, float lambda,
  */
 void vector4_multiply(float lambda, vector4_t *vector4, vector4_t *result);
 
-/** 
+/**
  * @brief dot product of two vector4_t and put the result in a float
  * @param vector4_a the first vector4_t
  * @param vector4_b the second vector4_t
  * @param result the float to store the result
- * 
+ *
  */
 void vector4_dot_vector4(vector4_t *vector4_a, vector4_t *vector4_b,
-                        float *result);
+                         float *result);
 
 /**
  * @brief UNDECLARED FUNCTION. DO NOT USE
- * @details cross product of two vector4_t and put the result in another vector4_t
+ * @details cross product of two vector4_t and put the result in another
+ * vector4_t
  * @param[in] vector4_a 'vector4_t'
  * @param[in] vector4_b 'vector4_t'
  * @param[out] result   'vector4_t'
  */
 void vector4_cross_vector4(vector4_t *vector4_a, vector4_t *vector4_b,
-                          vector4_t *result);
+                           vector4_t *result);
 
 #endif // VECTOR4_H

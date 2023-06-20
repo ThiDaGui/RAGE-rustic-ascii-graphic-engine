@@ -3,8 +3,8 @@
  * @brief source file of the h_triangle module
  * @version 0.1
  * @date 2023-06-16
- * 
- * 
+ *
+ *
  */
 #include "h_triangle.h"
 

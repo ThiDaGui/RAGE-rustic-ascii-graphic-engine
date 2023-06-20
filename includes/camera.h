@@ -1,11 +1,11 @@
 /**
  * @file camera.h
- * @brief camera header file. 
+ * @brief camera header file.
  * contains the camera struct and the functions to manipulate it.
  * @version 0.1
  * @date 2023-06-16
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 
 #ifndef CAMERA_H
@@ -27,11 +27,11 @@
  */
 #define DEFAULT_Z_FAR 100.0f
 
-
 /**
  * @struct camera_t
  * @brief camera_t is a struct that contains the data of a camera
- * @details Initialize the camera with the camera_init function and free it with the camera_free function
+ * @details Initialize the camera with the camera_init function and free it with
+ * the camera_free function
  * @var camera_t::position
  * The position of the camera
  * @var camera_t::look_at
@@ -75,7 +75,7 @@ typedef struct camera_t
 
 /**
  * @brief Initialize the camera
- * 
+ *
  * @param camera the pointer to the camera to initialize
  * @param fov field of view of the camera in degrees to set
  * @param width width of the camera in pixels
@@ -84,26 +84,26 @@ typedef struct camera_t
 void camera_init(camera_t *camera, float fov, size_t width, size_t height);
 /**
  * @brief Free the camera
- * 
+ *
  * @param camera the pointer to the camera to free
  */
 void camera_free(camera_t *camera);
 /**
  * @brief Update the world to view matrix of the camera
- * 
- * @param camera 
+ *
+ * @param camera
  */
 void update_world_to_view_matrix(camera_t *camera);
 /**
  * @brief Update the view to clip matrix of the camera
- * 
- * @param camera 
+ *
+ * @param camera
  */
 void update_view_to_clip_matrix(camera_t *camera);
 /**
  * @brief Update the projection matrix of the camera
- * 
- * @param camera  
+ *
+ * @param camera
  */
 void update_projection_matrix(camera_t *camera);
 

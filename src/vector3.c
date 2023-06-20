@@ -3,8 +3,8 @@
  * @brief source file for vector3 type and functions
  * @version 0.1
  * @date 2023-06-19
- * 
- * 
+ *
+ *
  */
 #include "vector3.h"
 
@@ -54,8 +54,9 @@ void vector3_pc_BLERP(vector3_t *vector3_a, float z_a, float lambda_a,
                       vector3_t *vector3_c, float z_c, float lambda_c,
                       vector3_t *result)
 {
-    float one_over_z = lambda_a * 1.0f/z_a + lambda_b * 1.0f / z_b + lambda_c * 1.0f / z_c;
-    float z = 1.0f/one_over_z;
+    float one_over_z =
+        lambda_a * 1.0f / z_a + lambda_b * 1.0f / z_b + lambda_c * 1.0f / z_c;
+    float z = 1.0f / one_over_z;
 
     result->x = z
         * (lambda_a * vector3_a->x / z_a + lambda_b * vector3_b->x / z_b

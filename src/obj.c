@@ -3,8 +3,8 @@
  * @brief source file of the obj module
  * @version 0.1
  * @date 2023-06-17
- * 
- * 
+ *
+ *
  */
 #define _GNU_SOURCE
 #include "obj.h"

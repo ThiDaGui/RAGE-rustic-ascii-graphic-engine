@@ -17,7 +17,7 @@ extern const triangle_t TRIANGLE_INIT;
 /**
  * @brief Initialize a triangle
  * @see triangle_free
- * @return triangle_t* 
+ * @return triangle_t*
  */
 triangle_t *triangle_init(void);
 /**

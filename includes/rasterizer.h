@@ -27,17 +27,26 @@
 
 /**
  * @brief plot a line between two points
- * 
- * @param x0 
- * @param y0 
- * @param x1 
- * @param y1 
- * @param image 
- * @param width 
+ *
+ * @param x0
+ * @param y0
+ * @param x1
+ * @param y1
+ * @param image
+ * @param width
  */
 void plotLineLow(int x0, int y0, int x1, int y1, int image[], size_t width);
 void plotLineHigh(int x0, int y0, int x1, int y1, int image[], size_t width);
 void plotLine(int x0, int y0, int x1, int y1, int image[], size_t width);
+
+/**
+ * @brief
+ *
+ * @param v1
+ * @param v2
+ * @param v3
+ * @return
+ */
 float edgeFunction(vector3_t *v1, vector3_t *v2, vector3_t *v3);
 void build_triangle(vector3_t *v1, vector3_t *v2, vector3_t *v3, int color,
                     int *image, float *z_buffer, size_t width, size_t height);

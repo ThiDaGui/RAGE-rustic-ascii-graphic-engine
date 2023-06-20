@@ -1,6 +1,6 @@
 /**
  * @file vector3.h
- * @brief header file of the vector3 module 
+ * @brief header file of the vector3 module
  * @version 0.1
  * @date 2023-06-19
  */
@@ -8,7 +8,7 @@
 #define VECTOR3_H
 /**
  * @struct vector3_t
- * @brief is a 3d vector 
+ * @brief is a 3d vector
  */
 typedef struct vector3_t
 {
@@ -49,7 +49,8 @@ void vector3_set(vector3_t *vector3, float x, float y, float z);
 /* =================== Operations ============================= */
 
 /**
- * @brief perform a linear combination of two vector3_t and put the result in another
+ * @brief perform a linear combination of two vector3_t and put the result in
+ * another
  * @param vector3_a first `vector3_t`
  * @param vector3_b second `vector3_t`
  * @param lambda the coefficient of the linear combination
@@ -59,7 +60,8 @@ void vector3_linear(vector3_t *vector3_a, vector3_t *vector3_b, float lambda,
                     vector3_t *result);
 
 /**
- * @brief perform a linear interpolation of two vector3_t and put the result in the result vector3_t
+ * @brief perform a linear interpolation of two vector3_t and put the result in
+ * the result vector3_t
  * @param vector3_a the first `vector3_t`
  * @param vector3_b the second `vector3_t`
  * @param lambda the coefficient of the linear interpolation
@@ -69,9 +71,10 @@ void vector3_LERP(vector3_t *vector3_a, vector3_t *vector3_b, float lambda,
                   vector3_t *result);
 
 /**
- * @brief perform a perspective correct baricentric linear interpolation of three vector3_t and put the result in the result vector3_t
+ * @brief perform a perspective correct baricentric linear interpolation of
+ * three vector3_t and put the result in the result vector3_t
  * @param vector3_a the first `vector3_t`
- * @param z_a depth of the first `vector3_t` 
+ * @param z_a depth of the first `vector3_t`
  * @param lambda_a coefficient for the first `vector3_t`
  * @param vector3_b the second `vector3_t`
  * @param z_b depth of the second `vector3_t`
@@ -96,7 +99,8 @@ void vector3_pc_BLERP(vector3_t *vector3_a, float z_a, float lambda_a,
 int v_dot_v(vector3_t *a, vector3_t *b, float *result);
 
 /**
- * @brief cross product of the two vector3_t a and b and put the result in result
+ * @brief cross product of the two vector3_t a and b and put the result in
+ * result
  * @param a the first `vector3_t`
  * @param b the second `vector3_t`
  * @param result the `vector3_t` to put the result in
