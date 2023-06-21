@@ -79,7 +79,7 @@ Usage: rage_app [-?] [-s style] [--fov=fov] [--style=style] [--help] [--usage]
 
 For a detailed description of the arguments use the argument `--help`.
 
-./rage_app --help
+`./rage_app --help`
 ```
 Usage: rage_app [OPTION...] FILE
 Convert an input .obj model into ASCII art.
