@@ -16,8 +16,9 @@ To compile and run RAGE, you will need:
 * The CMake build system.
 * The nCurses library.
 * (optional) Doxygen to generate the documentation.
+* (optional) The Check library to generate the unit testings
 
-### Compile
+### Setup
 
 Inside the root directory run CMake:
 
@@ -31,19 +32,29 @@ cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
 ```
 #### Optional
+
 ##### Doxygen
 add the flag `-DBUILD_DOC=ON` to the cmake command
+
 ##### TEST
 add the flag `-DBUILD_TEST=ON` to the cmake command
 
+### Building
 After this you need to compile project as follows:
 
 ```sh
 cmake --build build/
 ```
+Or
+```sh
+cd build
+make
+```
+
 if you build with doxygen and/or the tests, you can run them with the following commands:
 ```sh
 cd build/
+make
 make doc # to generate the documentation. 
 make test # to run the tests
 ```
@@ -62,20 +73,21 @@ After compilation, execute the generated `rage_app` (in `build/`) file with the 
 Usage `--usage`:
 
 ```
-Usage: rage_app [-?] [-f FILE] [--filename=FILE] [--fov=float] [--help] [--usage]
+Usage: rage_app [-?] [-s style] [--fov=fov] [--style=style] [--help] [--usage]
+            FILE
 ```
 
 For a detailed description of the arguments use the argument `--help`.
 
-```sh
 ./rage_app --help
 ```
-```
-Usage: rage_app [OPTION...] 
+Usage: rage_app [OPTION...] FILE
 Convert an input .obj model into ASCII art.
 
-  -f, --filename=FILE        Image to transform into ASCII
-      --fov=float            Field of view of the camera
+      --fov=fov              Field of view of the camera in deg
+  -s, --style=style          display render style. Current options are:
+                             - acsii: render the scene using ascii characters
+                             as pixels
   -?, --help                 Give this help list
       --usage                Give a short usage message
 ```
