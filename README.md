@@ -22,14 +22,14 @@ To compile and run RAGE, you will need:
 
 Inside the root directory run CMake:
 
-#### DEBUG MOD
+#### Debug mode
 ```sh
-cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 ```
 
-#### RELEASE MOD
+#### Release mode
 ```sh
-cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 ```
 #### Optional
 
