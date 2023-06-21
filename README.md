@@ -16,7 +16,7 @@ To compile and run RAGE, you will need:
 * The CMake build system.
 * The nCurses library.
 * (optional) Doxygen to generate the documentation.
-* (optional) The Check library to generate the unit testings
+* (optional) The Check library to generate the unit testings.
 
 ### Setup
 
